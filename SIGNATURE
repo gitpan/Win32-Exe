@@ -14,59 +14,59 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 f402fe87add4c51486b3bfc8b4f112409e752f47 Changes
+SHA1 d885bd586096e4aa5cb02ea2a8d1795ba52a948f Changes
 SHA1 3c32baf0f2aa55f153fcd13d7ac4a956435b2f41 MANIFEST
-SHA1 55de95ab9d3c1448a2fb3f224417930871f0eddf META.yml
-SHA1 e0058259b3ec905355c540e5f268201f3e162372 Makefile.PL
-SHA1 db26cbe93b41b8c0f191a6f7fc4312c3bfea7afa README
-SHA1 d78c824a321715b390518287a8929623d7a55050 inc/Module/Install.pm
-SHA1 adfc45c82642d3726cc2c871c49062c000ccb0e4 inc/Module/Install/Base.pm
-SHA1 ba881ecfb8e8b9c4ebbc409b8025cac973511197 inc/Module/Install/Can.pm
-SHA1 c03e641fcc136de2fbdd62ce4e82e2dfa8410962 inc/Module/Install/Fetch.pm
-SHA1 8119fb04681f0085c6b466f592adc8d408861610 inc/Module/Install/Include.pm
-SHA1 876226cc896a285b2409db88d9033071c68cec50 inc/Module/Install/Makefile.pm
-SHA1 2a0dd241db019def435fde8537e600a182750824 inc/Module/Install/Metadata.pm
-SHA1 04d629dd71239bb9c4d79415fd7c932ce5be1bf6 inc/Module/Install/Scripts.pm
-SHA1 1915204e46fcee6faf528f8d86aec215e332cc7b inc/Module/Install/Win32.pm
-SHA1 acf1fd355f805442c195dc9dc4e764ad742862e1 inc/Module/Install/WriteAll.pm
+SHA1 dacf6a329aa2aad59236e2486e3913a37b779c95 META.yml
+SHA1 52f1eb77bb179ae47a0b86c0716ca6076ca8fe54 Makefile.PL
+SHA1 fbbc33ff41724e9a6a556872d0e92ec0eeb4f822 README
+SHA1 8ce7e929153133eb824fa71678a28952dc251848 inc/Module/Install.pm
+SHA1 b9972b7e2eb9e0f26e6aa1c450736d04d346cc9b inc/Module/Install/Base.pm
+SHA1 79919a7a54f4548dac20075e8dc8869fc41e0ce1 inc/Module/Install/Can.pm
+SHA1 9dd540f8e37b483f2ff7b59edd77425a83221b1c inc/Module/Install/Fetch.pm
+SHA1 666180aab448c383124cc6f5d242b59cded950bc inc/Module/Install/Include.pm
+SHA1 eff0614c9c10b5965b1c8c6f81ba4b222a30bb13 inc/Module/Install/Makefile.pm
+SHA1 96622a9c708604cf36d5f44b6fbff26b050e4c9d inc/Module/Install/Metadata.pm
+SHA1 d8ef5ce9f6d8b5c80a813d64128837cb659ecdb7 inc/Module/Install/Scripts.pm
+SHA1 f08018c1a76a07671910d05f06885aaa807ffce1 inc/Module/Install/Win32.pm
+SHA1 ab45068dc0f749d438705201e38d7901df0c824b inc/Module/Install/WriteAll.pm
 SHA1 899060edb710d071cb1941a35cb181c8ec743707 inc/Test/Builder.pm
 SHA1 7a4fd763259a68743b255ab86b772a380a5f07cd inc/Test/More.pm
-SHA1 ab496edbb518086b1c9f791500a9644c0342e48f lib/Win32/Exe.pm
-SHA1 0159ff9ea8a8c9089946cb3091a3882b29cbd244 lib/Win32/Exe/Base.pm
-SHA1 3102f182c0b0a4982bec1926a4a308ec4697bbaf lib/Win32/Exe/DataDirectory.pm
-SHA1 3ed27b42e3cc0f0fe25d150c404feaf6b9999af8 lib/Win32/Exe/DebugDirectory.pm
-SHA1 ab583bb3b26aa50ee7b4ebc4cdfcd26c2c5dc0dc lib/Win32/Exe/DebugTable.pm
-SHA1 b9bec2a55f2e7359d4a5e1151cadc341f85b6516 lib/Win32/Exe/IconFile.pm
-SHA1 da0396b00f78ab98e78997763aab5c430567f3d0 lib/Win32/Exe/PE.pm
-SHA1 41cf2fe519b8d92bf92cb5fae70e227a1e8b6924 lib/Win32/Exe/PE/Header.pm
-SHA1 193ba5d607994added78874ad49c2fb8247412c9 lib/Win32/Exe/PE/Header/PE32.pm
-SHA1 4093ddcee1e6c24f1039ea213d66a33e2a6f08e3 lib/Win32/Exe/Resource.pm
-SHA1 0d148b0f0ab70a0b1d45290d7711bdd82d27d881 lib/Win32/Exe/Resource/GroupIcon.pm
-SHA1 49bef0e9549a431ecb98acc00ac713985c2d02b4 lib/Win32/Exe/Resource/Icon.pm
-SHA1 69462d7944d1fbf6aeac5008221053fee306977e lib/Win32/Exe/Resource/Version.pm
-SHA1 cc0426b21f9a8b8ce28e5247aed2cd3be7e2c8e6 lib/Win32/Exe/ResourceData.pm
-SHA1 c9344f88f12c9961f8bb85671ba75ed522683bed lib/Win32/Exe/ResourceEntry.pm
-SHA1 f6dd7f40f9bfdbdceac3b73946d0ddf139815f46 lib/Win32/Exe/ResourceEntry/Id.pm
-SHA1 274e823892e1ade6bbe4c5769fc60f66dc87366f lib/Win32/Exe/ResourceEntry/Name.pm
-SHA1 04f3b54933a2def016147dc0fd1f057838789443 lib/Win32/Exe/ResourceTable.pm
-SHA1 1da48a744f12339d4e8e431531375a7d300d8e5d lib/Win32/Exe/Section.pm
-SHA1 207f4c9dd45df0582b8af41e06728a6edaa7455f lib/Win32/Exe/Section/Code.pm
-SHA1 23ced54fd8ac52ab99bdee7213d19914db8d7416 lib/Win32/Exe/Section/Data.pm
-SHA1 c79c5c43e9fe447ab87b2940b2b42646ef08522a lib/Win32/Exe/Section/Debug.pm
-SHA1 7885b17633f17f2a67667a9933c87cc84f2e6336 lib/Win32/Exe/Section/Exports.pm
-SHA1 06b6aa876859a4c977e6f6799e241345fd79126b lib/Win32/Exe/Section/Imports.pm
-SHA1 9e72ca663386e1a69957af53a42bf24109cffe8a lib/Win32/Exe/Section/Resources.pm
+SHA1 1fabf50a64c45eafa3f21c689491689fcdf5235e lib/Win32/Exe.pm
+SHA1 70c78807056ac205684cff00dc7264d7bd4a7b14 lib/Win32/Exe/Base.pm
+SHA1 8f3d4da587d7e10e40f61f42f8912718b9c99932 lib/Win32/Exe/DataDirectory.pm
+SHA1 a436533992a140d10312f965b537a84a7bca7283 lib/Win32/Exe/DebugDirectory.pm
+SHA1 89b66e8959f511211870667d2db11398ac44512a lib/Win32/Exe/DebugTable.pm
+SHA1 e0dfc9e09fef75fcb30d22eade50ad8f89969760 lib/Win32/Exe/IconFile.pm
+SHA1 0590e9a703cd56e7a628350b8fddaeeb00d0ebcf lib/Win32/Exe/PE.pm
+SHA1 2f82dbcef03aa25f65de11c032d40d8fe0f0268d lib/Win32/Exe/PE/Header.pm
+SHA1 22ec92608ff59a906b0bf43ad5b95ee088ceef34 lib/Win32/Exe/PE/Header/PE32.pm
+SHA1 d65c2c301b7c15557e3a10c7ebc121c069341524 lib/Win32/Exe/Resource.pm
+SHA1 bd8983557af108a422b892ee60f4df8f942a45f1 lib/Win32/Exe/Resource/GroupIcon.pm
+SHA1 d870e82e160190dca4f716a31056f903195ce793 lib/Win32/Exe/Resource/Icon.pm
+SHA1 dba7269d5752e134555f2363abb4b36f64dc9c3e lib/Win32/Exe/Resource/Version.pm
+SHA1 d640575ca218f79673b9651ae4e889e1c8ce6b65 lib/Win32/Exe/ResourceData.pm
+SHA1 c58f81feeec84e72394a61262c1b4fa33a96a115 lib/Win32/Exe/ResourceEntry.pm
+SHA1 614ccc250d8a7a550d3a5c40ea7c91780840403b lib/Win32/Exe/ResourceEntry/Id.pm
+SHA1 b79ee3d1db15a8f44bd347313aad1ccf9db5d660 lib/Win32/Exe/ResourceEntry/Name.pm
+SHA1 a704080b1f5d4d5d68ef549e23dddf4533747266 lib/Win32/Exe/ResourceTable.pm
+SHA1 876a780720090ae6d92d2ba981d808df58ed305d lib/Win32/Exe/Section.pm
+SHA1 41821f8c2dc4b09dc1c0b2e4ff529d5b05af11e8 lib/Win32/Exe/Section/Code.pm
+SHA1 438f322a6a600ebd23885560169cf6fe5532776e lib/Win32/Exe/Section/Data.pm
+SHA1 6e4f311ea1bb0e73b08af59c38cc100aa0a0a743 lib/Win32/Exe/Section/Debug.pm
+SHA1 eee72eb7791e0a9ec0c250e6fc52d72566f70f23 lib/Win32/Exe/Section/Exports.pm
+SHA1 f9f16fd97222684b076ac8ffeb8c9f1ba3eb8dfb lib/Win32/Exe/Section/Imports.pm
+SHA1 3819b571f7346f96a63fdb359fd2977d89f59dba lib/Win32/Exe/Section/Resources.pm
 SHA1 460b819214a595696cdedd0fc1337e8bcb578322 script/exe_update.pl
-SHA1 7ffbbb0937ba892ef2303b4802e76cef4700b835 t/0-signature.t
-SHA1 9a652315044d52e16f21a53607f6e064aa57c65f t/1-basic.t
-SHA1 5e9e9a6e0532728ade6ca1a01823ae2517ab0158 t/2-icon.t
+SHA1 be60e89a1025cc05678ade2de32b3626d9a4f22d t/0-signature.t
+SHA1 02b00a3a7d147d502c5371b771ed82cf0883e726 t/1-basic.t
+SHA1 c868ab19f04bc4bd48f174e397659c2576af84e5 t/2-icon.t
 SHA1 ce6253c20da323a2e512fb30bc21c2acb3c56d26 t/hd.ico
 SHA1 695701d14a51c663a8b87c5a5adeefa9275f1413 t/par.exe
 SHA1 6ac8c5ef1c2d80904a39977fb92e5e94f15e23e0 t/par.ico
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.3 (FreeBSD)
 
-iD8DBQFAMW80tLPdNzw1AaARAhjQAJ90eTkzUKG2h1B7fJyt2ugu2ksxpwCbBPNc
-D08CfB5rZ6O23cJTCM8JxRA=
-=PAFW
+iD8DBQFAVv+JtLPdNzw1AaARAjdhAJ9znSlnmZicbXaToFwELj34IVRnRwCgjk0a
+5acU6l1OKhiYE5xuUf9OaDc=
+=ErBa
 -----END PGP SIGNATURE-----

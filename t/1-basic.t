@@ -1,6 +1,6 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 # $File: /local/member/autrijus/Win32-Exe//t/1-basic.t $ $Author: autrijus $
-# $Revision: #30 $ $Change: 3894 $ $DateTime: 2004-02-17T01:25:44.032756Z $
+# $Revision: #12 $ $Change: 3628 $ $DateTime: 2004-03-16T13:12:33.854545Z $
 
 use strict;
 use FindBin;
@@ -15,7 +15,6 @@ $SIG{__WARN__} = sub { use Carp; Carp::cluck(@_) };
 use_ok('Win32::Exe');
 
 my $file = "$FindBin::Bin/par.exe";
-
 ok(my $orig = Win32::Exe->read_file($file), 'read_file');
 
 my $exe = Win32::Exe->new($file);

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-# $File: /local/member/autrijus/Win32-Exe//t/0-signature.t $ $Author: autrijus $
-# $Revision: #8 $ $Change: 3896 $ $DateTime: 2004-02-17T01:28:40.619691Z $
+# $File: //local/member/autrijus/Win32-Exe/t/0-signature.t $ $Author: autrijus $
+# $Revision: #4 $ $Change: 1130 $ $DateTime: 2004-02-17T15:40:29.640821Z $
 
 use strict;
 print "1..1\n";

@@ -1,8 +1,8 @@
 # $File: /local/member/autrijus/Win32-Exe//lib/Win32/Exe.pm $ $Author: autrijus $
-# $Revision: #29 $ $Change: 3896 $ $Date: 2004-02-17T01:28:40.619691Z $
+# $Revision: #13 $ $Change: 3626 $ $Date: 2004-03-16T11:58:23.873748Z $
 
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.06';
+$Win32::Exe::VERSION = '0.07';
 
 =head1 NAME
 
@@ -10,8 +10,8 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.06 of Win32::Exe, released
-February 17, 2004.
+This document describes version 0.07 of Win32::Exe, released
+March 16, 2004.
 
 =head1 SYNOPSIS
 
@@ -52,7 +52,7 @@ use constant FORMAT => (
     Magic	    => 'a2',    # "MZ"
     _		    => 'a58',
     PosPE	    => 'V',
-    _		    => 'a{$PosPE - 64}',
+    _		    => 'a{($PosPE > 64) ? $PosPE - 64 : "*"}',
     PESig	    => 'a4',
     Data	    => 'a*',
 );
@@ -62,7 +62,7 @@ use constant DELEGATE_SUBS => (
 use constant DISPATCH_FIELD => 'PESig';
 use constant DISPATCH_TABLE => (
     "PE\0\0"	=> "PE",
-    '*'		=> sub { die "Invalid PE header" },
+    '*'		=> sub { die "Incorrect PE header -- not a valid .exe file" },
 );
 use constant DEBUG_INDEX         => 6;
 use constant DEBUG_ENTRY_SIZE    => 28;

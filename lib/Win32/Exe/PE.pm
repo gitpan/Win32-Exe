@@ -1,5 +1,5 @@
-# $File: /local/member/autrijus/Win32-Exe//lib/Win32/Exe/PE.pm $ $Author: autrijus $
-# $Revision: #8 $ $Change: 3896 $ $Date: 2004-02-17T01:28:40.619691Z $
+# $File: //local/member/autrijus/Win32-Exe/lib/Win32/Exe/PE.pm $ $Author: autrijus $
+# $Revision: #6 $ $Change: 1130 $ $Date: 2004-02-17T15:40:29.640821Z $
 
 package Win32::Exe::PE;
 

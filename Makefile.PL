@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
-# $File: /local/member/autrijus/Win32-Exe//Makefile.PL $ $Author: autrijus $
-# $Revision: #9 $ $Change: 3896 $ $Date: 2004-02-17T01:28:40.619691Z $
+# $File: //local/member/autrijus/Win32-Exe/Makefile.PL $ $Author: autrijus $
+# $Revision: #6 $ $Change: 1130 $ $Date: 2004-02-17T15:40:29.640821Z $
 
 use inc::Module::Install;
 
