@@ -1,5 +1,5 @@
-# $File: //member/autrijus/Win32-Exe/README $ $Author: autrijus $
-# $Revision: #2 $ $Change: 9927 $ $DateTime: 2004/02/06 19:31:24 $
+# $File: /local/member/autrijus/Win32-Exe//README $ $Author: autrijus $
+# $Revision: #7 $ $Change: 3896 $ $Date: 2004-02-17T01:28:40.619691Z $
 
 This is the README file for Win32::Exe, a module for manipulating
 Win32 PE/COFF executable headers.

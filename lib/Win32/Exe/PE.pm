@@ -1,5 +1,5 @@
-# $File: //member/autrijus/.vimrc $ $Author: autrijus $
-# $Revision: #14 $ $Change: 4137 $ $DateTime: 2003/02/08 11:41:59 $
+# $File: /local/member/autrijus/Win32-Exe//lib/Win32/Exe/PE.pm $ $Author: autrijus $
+# $Revision: #8 $ $Change: 3896 $ $Date: 2004-02-17T01:28:40.619691Z $
 
 package Win32::Exe::PE;
 
@@ -10,7 +10,7 @@ use constant SUBFORMAT => (
     NumSections	    => 'v',
     TimeStamp	    => 'V',
     SymbolTable	    => 'V',
-    PEPad1	    => 'a4',
+    _		    => 'a4',
     OptHeaderSize   => 'v',
     Characteristics => 'v',
     Data	    => 'a*',

@@ -1,12 +1,13 @@
-# $File: //member/autrijus/.vimrc $ $Author: autrijus $
-# $Revision: #14 $ $Change: 4137 $ $DateTime: 2003/02/08 11:41:59 $
+#!/usr/bin/perl
+# $File: /local/member/autrijus/Win32-Exe//t/1-basic.t $ $Author: autrijus $
+# $Revision: #30 $ $Change: 3894 $ $DateTime: 2004-02-17T01:25:44.032756Z $
 
 use strict;
 use FindBin;
 use lib "$FindBin::Bin/../inc";
 use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/../../Parse-Binary/lib";
-use Test::More tests => 20;
+use Test::More tests => 21;
 
 $SIG{__DIE__} = sub { use Carp; Carp::confess(@_) };
 $SIG{__WARN__} = sub { use Carp; Carp::cluck(@_) };
@@ -20,6 +21,7 @@ ok(my $orig = Win32::Exe->read_file($file), 'read_file');
 my $exe = Win32::Exe->new($file);
 isa_ok($exe, 'Win32::Exe');
 is($exe->dump, $orig, 'roundtrip');
+
 is($exe->Subsystem, 'console', 'Subsystem');
 $exe->SetSubsystem('windows');
 is($exe->Subsystem, 'windows', 'SetSubsystem');
@@ -57,6 +59,8 @@ is_deeply(
 );
 
 my $group = $rsrc->first_object('GroupIcon');
+is($group->PathName, '/#RT_GROUP_ICON/#1/#0', 'pathname');
+
 my $version = $rsrc->first_object('Version');
 is($version->info->[0], 'VS_VERSION_INFO', 'version->info');
 is($version->get('FileVersion'), '0,0,0,0', 'version->get');

@@ -1,5 +1,6 @@
-# $File: //member/autrijus/.vimrc $ $Author: autrijus $
-# $Revision: #14 $ $Change: 4137 $ $DateTime: 2003/02/08 11:41:59 $
+#!/usr/bin/perl
+# $File: /local/member/autrijus/Win32-Exe//t/2-icon.t $ $Author: autrijus $
+# $Revision: #16 $ $Change: 3896 $ $DateTime: 2004-02-17T01:28:40.619691Z $
 
 use strict;
 use FindBin;

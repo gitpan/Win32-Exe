@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
-# $File: //member/autrijus/Win32-Exe/Makefile.PL $ $Author: autrijus $
-# $Revision: #2 $ $Change: 9927 $ $DateTime: 2004/02/06 19:31:24 $
+# $File: /local/member/autrijus/Win32-Exe//Makefile.PL $ $Author: autrijus $
+# $Revision: #9 $ $Change: 3896 $ $Date: 2004-02-17T01:28:40.619691Z $
 
 use inc::Module::Install;
 
@@ -13,7 +13,7 @@ version_from	('lib/Win32/Exe.pm');
 
 requires	(
     perl	    => '5.6.0',
-    'Parse::Binary' => 0.04,
+    'Parse::Binary' => 0.05,
 );
 build_requires	('Test::More');
 

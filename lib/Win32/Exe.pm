@@ -1,8 +1,8 @@
-# $File: //member/autrijus/.vimrc $ $Author: autrijus $
-# $Revision: #14 $ $Change: 4137 $ $DateTime: 2003/02/08 11:41:59 $
+# $File: /local/member/autrijus/Win32-Exe//lib/Win32/Exe.pm $ $Author: autrijus $
+# $Revision: #29 $ $Change: 3896 $ $Date: 2004-02-17T01:28:40.619691Z $
 
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.05';
+$Win32::Exe::VERSION = '0.06';
 
 =head1 NAME
 
@@ -10,8 +10,8 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.05 of Win32::Exe, released
-February 16, 2004.
+This document describes version 0.06 of Win32::Exe, released
+February 17, 2004.
 
 =head1 SYNOPSIS
 
@@ -41,8 +41,8 @@ This module parses and manipulating Win32 PE/COFF executable headers,
 including version information, icons and other resources.
 
 More documentation will be provided in due time.  For now, please look
-at the test files in the source distributions F<t/> directory for sample
-usages of this module.
+at the test files in the source distributions F<t/> directory for examples
+of using this module.
 
 =cut
 
@@ -50,9 +50,9 @@ use strict;
 use base 'Win32::Exe::Base';
 use constant FORMAT => (
     Magic	    => 'a2',    # "MZ"
-    Pad1	    => 'a58',
+    _		    => 'a58',
     PosPE	    => 'V',
-    Pad2	    => 'a{$PosPE - 64}',
+    _		    => 'a{$PosPE - 64}',
     PESig	    => 'a4',
     Data	    => 'a*',
 );
@@ -202,11 +202,14 @@ sub set_icons {
     my ($self, $icons) = @_;
 
     my $rsrc = $self->resource_section;
-    $rsrc->remove("/#RT_GROUP_ICON");
-    $rsrc->remove("/#RT_ICON");
+    my $name = eval { $rsrc->first_object('GroupIcon')->PathName }
+	    || '/#RT_GROUP_ICON/#1/#0';
+
+    $rsrc->remove('/#RT_GROUP_ICON');
+    $rsrc->remove('/#RT_ICON');
 
     my $group = $self->require_class('Resource::GroupIcon')->new;
-    $group->SetPathName("/#RT_GROUP_ICON/#1/#0");
+    $group->SetPathName($name);
     $group->set_parent($rsrc);
     $rsrc->insert($group->PathName, $group);
 
