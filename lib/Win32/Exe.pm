@@ -1,8 +1,8 @@
 # $File: /local/member/autrijus/Win32-Exe//lib/Win32/Exe.pm $ $Author: autrijus $
-# $Revision: #13 $ $Change: 3626 $ $Date: 2004-03-16T11:58:23.873748Z $
+# $Revision: #14 $ $Change: 3715 $ $Date: 2004-03-18T05:06:01.118230Z $
 
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.07';
+$Win32::Exe::VERSION = '0.08';
 
 =head1 NAME
 
@@ -10,8 +10,8 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.07 of Win32::Exe, released
-March 16, 2004.
+This document describes version 0.08 of Win32::Exe, released
+March 18, 2004.
 
 =head1 SYNOPSIS
 
@@ -67,6 +67,10 @@ use constant DISPATCH_TABLE => (
 use constant DEBUG_INDEX         => 6;
 use constant DEBUG_ENTRY_SIZE    => 28;
 
+use File::Basename ();
+use Win32::Exe::IconFile;
+use Win32::Exe::DebugTable;
+
 sub resource_section {
     my ($self) = @_;
     $self->first_member('Resources');
@@ -114,7 +118,6 @@ sub update_debug_directory {
 	$offset += $addr - $v_addr;
 	my $data = $self->substr($offset, $size);
 
-	require Win32::Exe::DebugTable;
 	my $table = Win32::Exe::DebugTable->new(\$data);
 
 	foreach my $dir ($table->members) {
@@ -133,7 +136,6 @@ sub update_debug_directory {
 sub default_info {
     my $self = shift;
 
-    require File::Basename;
     my $filename = File::Basename::basename($self->filename);
 
     return join(';',
@@ -153,7 +155,6 @@ sub update {
     my ($self, %args) = @_;
 
     if (my $icon = $args{icon}) {
-	require Win32::Exe::IconFile;
 	my @icons = Win32::Exe::IconFile->new($icon)->icons;
 	$self->set_icons(\@icons) if @icons;
     }

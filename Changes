@@ -1,4 +1,11 @@
 ----------------------------------------------------------------------
+r3715:  autrijus | 2004-03-18T05:06:01.118230Z
+
+* This be 0.08.
+* Load all require submodules with 'use', not 'require', so
+  it can work with 'pp' in PAR 0.80.  Reported by Alan Stewart.
+
+----------------------------------------------------------------------
 r3626:  autrijus | 2004-03-16T11:58:23.873748Z
 
 * This be 0.07.
