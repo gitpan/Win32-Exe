@@ -34,6 +34,7 @@ sub set_icons {
     my ($self, $icons) = @_;
     $self->SetCount(scalar @$icons);
     $self->set_members('Resource::Icon' => $icons);
+    $self->refresh;
 
     foreach my $idx (0 .. $#{$icons}) {
 	$self->icons->[$idx]->SetImageOffset(length($self->dump));

@@ -2,7 +2,7 @@
 # $Revision: #14 $ $Change: 4137 $ $DateTime: 2003/02/08 11:41:59 $
 
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.03';
+$Win32::Exe::VERSION = '0.04';
 
 =head1 NAME
 
@@ -10,7 +10,7 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.03 of Win32::Exe, released
+This document describes version 0.04 of Win32::Exe, released
 February 15, 2004.
 
 =head1 SYNOPSIS

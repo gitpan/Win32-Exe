@@ -96,9 +96,7 @@ sub pad_data {
     my $exe_size = $exe->size;
     if ($exe_size > $offset) {
 	my $buf = $exe->substr($offset, ($exe_size - $offset));
-	$::DEBUG++;
 	$exe->substr($offset + $f_extra, length($buf), $buf);
-	$::DEBUG--;
     }
 
     $exe->set_size($exe_size + $f_extra);
