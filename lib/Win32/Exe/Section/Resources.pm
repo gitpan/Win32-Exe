@@ -131,7 +131,7 @@ sub refresh {
 	    my $str = $self->encode_ucs2($chunk);
 	    $str_image .= pack('v', length($str) / 2) . $str;
 
-	    $str_addr{$name} = $addr + $str_offset;
+	    $str_addr{$chunk} = $addr + $str_offset;
 	}
     }
     $str_image .= $self->pad($str_image, 8);
@@ -241,12 +241,11 @@ sub make_entry {
 sub sort_entry {
     my ($self, $entries) = @_;
 
-    my @names = keys %{ $entries->{name} };
-    @names = map { $_->[1] } sort { $a->[0] cmp $b->[0] } map {
+    my @names = map { $_->[1] } sort { $a->[0] cmp $b->[0] } map {
 	my $name = lc($_);
 	$name =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 	[ $name => $_ ];
-    } @names;
+    } keys %{ $entries->{name} };
 
     my @ids = map "#$_", sort {
 	$self->rt_to_id($a) <=> $self->rt_to_id($b)
