@@ -2,11 +2,16 @@
 # $Revision: #14 $ $Change: 4137 $ $DateTime: 2003/02/08 11:41:59 $
 
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.01';
+$Win32::Exe::VERSION = '0.02';
 
 =head1 NAME
 
 Win32::Exe - Manipulate Win32 executable files
+
+=head1 VERSION
+
+This document describes version 0.02 of Win32::Exe, released
+February 15, 2004.
 
 =head1 SYNOPSIS
 
@@ -90,6 +95,9 @@ sub update_debug_directory {
     my $dir = $dirs[DEBUG_INDEX] or return;
     my $size = $dir->Size;
     my $addr = $dir->VirtualAddress;
+
+    return unless $size or $addr;
+
     my $count = $size / DEBUG_ENTRY_SIZE or return;
 
     (($size % DEBUG_ENTRY_SIZE) == 0) or return;

@@ -13,7 +13,7 @@ version_from	('lib/Win32/Exe.pm');
 
 requires	(
     perl	    => '5.6.0',
-    'Parse::Binary' => 0.01,
+    'Parse::Binary' => 0.03,
 );
 build_requires	('Test::More');
 

@@ -52,7 +52,6 @@ sub SetData {
     my $pad_size = length($1) if $data =~ s/(\0*)\z//;
 
     my $exe = $self->parent;
-
     $exe->OptHeaderSize == 224 or die "Unsupported binary format";
 
     my $index = $self->sibling_index;
@@ -63,7 +62,7 @@ sub SetData {
     my $f_extra = $f_size - $self->FileSize;
     my $v_extra = $v_size - $self->align($self->VirtualSize, $exe->SectionAlign);
 
-    $self->pad_data($f_extra, $v_extra) if $f_extra > 0;
+    $self->pad_data($f_extra, $v_extra) if $f_extra;
 
     $self->SetVirtualSize($data_size + $pad_size);
     $data .= ("\0" x ($self->FileSize - $data_size));
@@ -82,13 +81,12 @@ sub update_size {
     foreach my $dir ($exe->data_directories) {
 	next unless $dir->VirtualAddress == $v_addr;
 	$dir->SetSize($v_size);
+	$dir->refresh;
     }
 }
 
 sub pad_data {
     my ($self, $f_extra, $v_extra) = @_;
-
-    die "XXX - pad_data does not currently work - XXX";
 
     my $exe = $self->parent;
     my $offset = $self->FileOffset + $self->FileSize;
@@ -98,13 +96,22 @@ sub pad_data {
     my $exe_size = $exe->size;
     if ($exe_size > $offset) {
 	my $buf = $exe->substr($offset, ($exe_size - $offset));
+	$::DEBUG++;
 	$exe->substr($offset + $f_extra, length($buf), $buf);
+	$::DEBUG--;
     }
 
     $exe->set_size($exe_size + $f_extra);
-    $exe->SetData($exe->Data . ("\0" x $f_extra));
+    if ($f_extra > 0) {
+	$exe->SetData($exe->Data . ("\0" x $f_extra));
+    }
+    else {
+	$exe->SetData(substr($exe->Data, 0, $f_extra));
+    }
 
+    my $index = $self->sibling_index;
     foreach my $section (@{$self->siblings}) {
+	next if $section->sibling_index <= $index;
 	$section->update_offset($f_extra, $v_extra);
     }
 

@@ -14,10 +14,10 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 dfadeafa301b741f571d7be2f0c7f7742eff1ffa Changes
+SHA1 ad12c1b4fde406bdf3c2a7afd7c03a165a07793e Changes
 SHA1 3c32baf0f2aa55f153fcd13d7ac4a956435b2f41 MANIFEST
-SHA1 f1da8af3da6fc54559226b90308846cd3960ad51 META.yml
-SHA1 2cfe6867366df223bb32e5f3e27b2a2f5fd017c7 Makefile.PL
+SHA1 853f79e0f03ac32a5a583eda104ac5d04ba70619 META.yml
+SHA1 6631ab23dcb2e8fa6c1fa19a511f575536d55fdc Makefile.PL
 SHA1 74cd983b35bb80328e0d1135d82bfa95ed4031fe README
 SHA1 d78c824a321715b390518287a8929623d7a55050 inc/Module/Install.pm
 SHA1 adfc45c82642d3726cc2c871c49062c000ccb0e4 inc/Module/Install/Base.pm
@@ -31,7 +31,7 @@ SHA1 1915204e46fcee6faf528f8d86aec215e332cc7b inc/Module/Install/Win32.pm
 SHA1 acf1fd355f805442c195dc9dc4e764ad742862e1 inc/Module/Install/WriteAll.pm
 SHA1 899060edb710d071cb1941a35cb181c8ec743707 inc/Test/Builder.pm
 SHA1 7a4fd763259a68743b255ab86b772a380a5f07cd inc/Test/More.pm
-SHA1 199cb1dff7c16b4dc0b66645c723099429e06e34 lib/Win32/Exe.pm
+SHA1 34841558c34213882b83b31b0d4c64da788c8b57 lib/Win32/Exe.pm
 SHA1 d4af4d69887383a13ec321d6d99e507fcdc4a033 lib/Win32/Exe/Base.pm
 SHA1 41e240d6a7fd47798632389d3e927972d3af1f10 lib/Win32/Exe/DataDirectory.pm
 SHA1 912d0e45c3f7d6f8095da4a34d37a9b0d8ea7c2c lib/Win32/Exe/DebugDirectory.pm
@@ -40,7 +40,7 @@ SHA1 e4e8d2b4f2517a426127e62600e778d63c4ab423 lib/Win32/Exe/IconFile.pm
 SHA1 b9d9961b8f395728c5c30de04b19b72184b6ea92 lib/Win32/Exe/PE.pm
 SHA1 8337891c7a94ff000b2fd6735d7aed347f343e7a lib/Win32/Exe/PE/Header.pm
 SHA1 4ab4c848a3b7dc98f815d91b5c2461805d4fa9dc lib/Win32/Exe/PE/Header/PE32.pm
-SHA1 ea54534634fb5139667a58a4db5868204a0232b7 lib/Win32/Exe/Resource.pm
+SHA1 86dc5b3524ae82bcb1bfea14c55e11c8b0be7777 lib/Win32/Exe/Resource.pm
 SHA1 d4e584c091c5833d35379d4eb5b47c2dd81920a5 lib/Win32/Exe/Resource/GroupIcon.pm
 SHA1 cf73f31a418eed0d5d52d56bf5f91b4330180845 lib/Win32/Exe/Resource/Icon.pm
 SHA1 600c8221cca3b4378b8698639b67488b73c68e8c lib/Win32/Exe/Resource/Version.pm
@@ -49,7 +49,7 @@ SHA1 2725c84da7038b8c527da118c8fb38be0a7df38d lib/Win32/Exe/ResourceEntry.pm
 SHA1 4ecac365398567e495a182b9c6d6cfe0187ddf47 lib/Win32/Exe/ResourceEntry/Id.pm
 SHA1 3d55f096ec8c21188a5fd2c38b43f8686774631e lib/Win32/Exe/ResourceEntry/Name.pm
 SHA1 48f4fd6ebe17a82124d9a62883e7e1445bb63afd lib/Win32/Exe/ResourceTable.pm
-SHA1 4a3ecb83993a14ccabdaa1b5eec4879412b60316 lib/Win32/Exe/Section.pm
+SHA1 b94e3e71cf3a14dfddf23a118cf7e0efd25d0a29 lib/Win32/Exe/Section.pm
 SHA1 7dfdb2d9e1115a3c6ed803d1156562f111ead296 lib/Win32/Exe/Section/Code.pm
 SHA1 36cc4c5033d25dd440c64ed78c0aee42c5a29741 lib/Win32/Exe/Section/Data.pm
 SHA1 4a80932f436682bc324f676fe0ad307548a1f848 lib/Win32/Exe/Section/Debug.pm
@@ -61,12 +61,12 @@ SHA1 8965fc92840a68b7e22d1cd4f5eb290f378cbf55 t/0-signature.t
 SHA1 fc52e9ceb03eda8d8b9f5ade21b1565cb36df264 t/1-basic.t
 SHA1 63d0023022725967b64d5617e9b304a1b2b0ec59 t/2-icon.t
 SHA1 ce6253c20da323a2e512fb30bc21c2acb3c56d26 t/hd.ico
-SHA1 4b4d1efa293f5c1e5fa4cb72bdf13de0e250fe02 t/par.exe
+SHA1 695701d14a51c663a8b87c5a5adeefa9275f1413 t/par.exe
 SHA1 6ac8c5ef1c2d80904a39977fb92e5e94f15e23e0 t/par.ico
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.3 (FreeBSD)
 
-iD8DBQFALWLTtLPdNzw1AaARAj0HAKCEHGuXMoMUH1siUVIILyvnSBIcngCeNdLn
-LOwYJ/L+qC8zBkSuQDhedH0=
-=qDqF
+iD8DBQFALn3QtLPdNzw1AaARAsxgAKCg4wvI0IH9e76Qrs19U/BmDYivhgCfSL+0
+PPPDq1qbr7svLKg94yW6kfk=
+=DRX0
 -----END PGP SIGNATURE-----

@@ -1,4 +1,29 @@
 ----------------------------------------------------------------------
+r3807:  autrijus | 2004-02-14T19:43:30.059984Z
+
+* This be 0.02.
+* truncating executables to smaller size now works.
+
+----------------------------------------------------------------------
+r3806:  autrijus | 2004-02-14T19:26:48.232936Z
+
+* properly extend the executable. it should now really work!
+----------------------------------------------------------------------
+r3805:  autrijus | 2004-02-14T19:21:21.021903Z
+
+* forgot to refresh data directories after updating exe. bummer
+* bump versions, etc.
+
+----------------------------------------------------------------------
+r3800:  autrijus | 2004-02-14T12:16:02.984294Z
+
+* fix two gotchas that were probably preventing padding from working
+
+----------------------------------------------------------------------
+r3789:  autrijus | 2004-02-13T23:50:48.015462Z
+
+* changes and signatures.
+----------------------------------------------------------------------
 r3788:  autrijus | 2004-02-13T23:49:21.521921Z
 
 * This be Win32::Exe, version 0.01.

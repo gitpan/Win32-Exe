@@ -17,7 +17,7 @@ sub path {
 }
 
 sub CodePage {
-    return 1152;
+    return 1252;
 }
 
 sub PathName {
