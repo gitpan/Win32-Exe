@@ -14,9 +14,9 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 ad12c1b4fde406bdf3c2a7afd7c03a165a07793e Changes
+SHA1 1ba5f8242c24ce5e21d90ee12b42990599813ae3 Changes
 SHA1 3c32baf0f2aa55f153fcd13d7ac4a956435b2f41 MANIFEST
-SHA1 e901799a7aad14f8b02cfe2c37918fe3f3c88a97 META.yml
+SHA1 64bc3ae0cddbd78bb39edd453c92cdc456d633b7 META.yml
 SHA1 a3259c79061645594157feb5f3b10a4dadf34673 Makefile.PL
 SHA1 74cd983b35bb80328e0d1135d82bfa95ed4031fe README
 SHA1 d78c824a321715b390518287a8929623d7a55050 inc/Module/Install.pm
@@ -31,7 +31,7 @@ SHA1 1915204e46fcee6faf528f8d86aec215e332cc7b inc/Module/Install/Win32.pm
 SHA1 acf1fd355f805442c195dc9dc4e764ad742862e1 inc/Module/Install/WriteAll.pm
 SHA1 899060edb710d071cb1941a35cb181c8ec743707 inc/Test/Builder.pm
 SHA1 7a4fd763259a68743b255ab86b772a380a5f07cd inc/Test/More.pm
-SHA1 61f8672836d7a76a404d2701d6f46f5820dfaa0d lib/Win32/Exe.pm
+SHA1 9597e19da6803e11d8f43395d89e7e0152ca089a lib/Win32/Exe.pm
 SHA1 d4af4d69887383a13ec321d6d99e507fcdc4a033 lib/Win32/Exe/Base.pm
 SHA1 41e240d6a7fd47798632389d3e927972d3af1f10 lib/Win32/Exe/DataDirectory.pm
 SHA1 912d0e45c3f7d6f8095da4a34d37a9b0d8ea7c2c lib/Win32/Exe/DebugDirectory.pm
@@ -56,17 +56,17 @@ SHA1 4a80932f436682bc324f676fe0ad307548a1f848 lib/Win32/Exe/Section/Debug.pm
 SHA1 6a949ab2aa0733733e5da1efd252c276a1f7819e lib/Win32/Exe/Section/Exports.pm
 SHA1 998e6cfaab6099eeb016ca13b4a96b2082184808 lib/Win32/Exe/Section/Imports.pm
 SHA1 6b93f83e6ef0b5fb4772721645813b8103212e30 lib/Win32/Exe/Section/Resources.pm
-SHA1 35814b7b524df346ef429763994902f96136bad9 script/exe_update.pl
+SHA1 460b819214a595696cdedd0fc1337e8bcb578322 script/exe_update.pl
 SHA1 8965fc92840a68b7e22d1cd4f5eb290f378cbf55 t/0-signature.t
-SHA1 fc52e9ceb03eda8d8b9f5ade21b1565cb36df264 t/1-basic.t
-SHA1 63d0023022725967b64d5617e9b304a1b2b0ec59 t/2-icon.t
+SHA1 12ff5703de5971b8da90eb4719aae84bef6a3340 t/1-basic.t
+SHA1 99fcdd81fe3ca30b95f0aa04a09e327ab48e0561 t/2-icon.t
 SHA1 ce6253c20da323a2e512fb30bc21c2acb3c56d26 t/hd.ico
 SHA1 695701d14a51c663a8b87c5a5adeefa9275f1413 t/par.exe
 SHA1 6ac8c5ef1c2d80904a39977fb92e5e94f15e23e0 t/par.ico
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.3 (FreeBSD)
 
-iD8DBQFAL/T3tLPdNzw1AaARAkN5AJ4xUi9UwhuhitkVAflSE06ZXIXSbQCgoKr+
-H8/OVx98YNG4MYaeOlmk2Z0=
-=gswX
+iD8DBQFAMIvytLPdNzw1AaARAqJ+AJ0VYHpTfJlnkDIfZR4xlbGvpexU9wCfRSS/
+KgVUOlsOEpy9xZAY2wgJAcA=
+=KEX/
 -----END PGP SIGNATURE-----

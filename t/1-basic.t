@@ -3,9 +3,10 @@
 
 use strict;
 use FindBin;
+use lib "$FindBin::Bin/../inc";
 use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/../../Parse-Binary/lib";
-use Test::More 'no_plan';
+use Test::More tests => 20;
 
 $SIG{__DIE__} = sub { use Carp; Carp::confess(@_) };
 $SIG{__WARN__} = sub { use Carp; Carp::cluck(@_) };
