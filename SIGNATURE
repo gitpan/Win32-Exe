@@ -1,12 +1,12 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.38.
+signed via the Module::Signature module, version 0.53.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
 
     % cpansign -v
 
-It would check each file's integrity, as well as the signature's
+It will check each file's integrity, as well as the signature's
 validity.  If "==> Signature verified OK! <==" is not displayed,
 the distribution may already have been compromised, and you should
 not run its Makefile.PL or Build.PL.
@@ -14,24 +14,23 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 5d6f60118919e8f7bc26be5b1a953fd0ccfc0223 Changes
-SHA1 3c32baf0f2aa55f153fcd13d7ac4a956435b2f41 MANIFEST
-SHA1 7c629cd885a6bd6fd5d428faca947c95d1191bbe META.yml
-SHA1 52f1eb77bb179ae47a0b86c0716ca6076ca8fe54 Makefile.PL
-SHA1 fbbc33ff41724e9a6a556872d0e92ec0eeb4f822 README
-SHA1 8ce7e929153133eb824fa71678a28952dc251848 inc/Module/Install.pm
-SHA1 b9972b7e2eb9e0f26e6aa1c450736d04d346cc9b inc/Module/Install/Base.pm
-SHA1 79919a7a54f4548dac20075e8dc8869fc41e0ce1 inc/Module/Install/Can.pm
-SHA1 9dd540f8e37b483f2ff7b59edd77425a83221b1c inc/Module/Install/Fetch.pm
-SHA1 666180aab448c383124cc6f5d242b59cded950bc inc/Module/Install/Include.pm
-SHA1 eff0614c9c10b5965b1c8c6f81ba4b222a30bb13 inc/Module/Install/Makefile.pm
-SHA1 96622a9c708604cf36d5f44b6fbff26b050e4c9d inc/Module/Install/Metadata.pm
-SHA1 d8ef5ce9f6d8b5c80a813d64128837cb659ecdb7 inc/Module/Install/Scripts.pm
-SHA1 f08018c1a76a07671910d05f06885aaa807ffce1 inc/Module/Install/Win32.pm
-SHA1 ab45068dc0f749d438705201e38d7901df0c824b inc/Module/Install/WriteAll.pm
-SHA1 899060edb710d071cb1941a35cb181c8ec743707 inc/Test/Builder.pm
-SHA1 7a4fd763259a68743b255ab86b772a380a5f07cd inc/Test/More.pm
-SHA1 7c1ea8a8c38a286bb68721da263dbed6e636125c lib/Win32/Exe.pm
+SHA1 05b667dbaecc50f06a594bf0ea516e5c47e56aee Changes
+SHA1 77956a6ed02b34c199f3a6ad6a19a0bd172fee09 MANIFEST
+SHA1 d5ceff52a728ef500ee97798e2659c2bfc774a2d META.yml
+SHA1 3b7411dde1a384ca25d19b3b2920bdc2176997a1 Makefile.PL
+SHA1 7ecc3cb4f3a4018181744570237b2b997c2533d0 README
+SHA1 017bedfcba1e0c72b36301e6ef21b8712b84d175 inc/Module/Install.pm
+SHA1 b1a70869c098ba602151631386fc510b5bfd3511 inc/Module/Install/Base.pm
+SHA1 dd7313db23119d49ae78593bfa576554fb5b0fd8 inc/Module/Install/Can.pm
+SHA1 7c3a5153a5574556d895f23e121a41e680da11c1 inc/Module/Install/Fetch.pm
+SHA1 2e9c012e58c778a4a83c5eaea20c3aed306ad0c5 inc/Module/Install/Include.pm
+SHA1 176d68fe7c07b6ab7cfe09093078b8127bbde786 inc/Module/Install/Makefile.pm
+SHA1 8b37b38215d14f922b3d5132ce33d11d21d531ba inc/Module/Install/Metadata.pm
+SHA1 1d8f4739eda5d665bbfe4206bd87274ad104ba77 inc/Module/Install/Scripts.pm
+SHA1 7eb44b00058c44795038d7fa4c0c77470f20a7f8 inc/Module/Install/Win32.pm
+SHA1 6d05967a5e1680b5f118315aaa6b8a1e143d79d8 inc/Module/Install/WriteAll.pm
+SHA1 07c750f370de7a44ee7b0ed9ec30a7e89c24c9b9 inc/Test/More.pm
+SHA1 d3fe7c1a49bd3df538f96fb69070ac3eb708bdd1 lib/Win32/Exe.pm
 SHA1 70c78807056ac205684cff00dc7264d7bd4a7b14 lib/Win32/Exe/Base.pm
 SHA1 8f3d4da587d7e10e40f61f42f8912718b9c99932 lib/Win32/Exe/DataDirectory.pm
 SHA1 a436533992a140d10312f965b537a84a7bca7283 lib/Win32/Exe/DebugDirectory.pm
@@ -56,7 +55,7 @@ SHA1 6e4f311ea1bb0e73b08af59c38cc100aa0a0a743 lib/Win32/Exe/Section/Debug.pm
 SHA1 eee72eb7791e0a9ec0c250e6fc52d72566f70f23 lib/Win32/Exe/Section/Exports.pm
 SHA1 f9f16fd97222684b076ac8ffeb8c9f1ba3eb8dfb lib/Win32/Exe/Section/Imports.pm
 SHA1 3819b571f7346f96a63fdb359fd2977d89f59dba lib/Win32/Exe/Section/Resources.pm
-SHA1 460b819214a595696cdedd0fc1337e8bcb578322 script/exe_update.pl
+SHA1 67d87079e92fac43837811bef300ddc9f6d2c7e6 script/exe_update.pl
 SHA1 be60e89a1025cc05678ade2de32b3626d9a4f22d t/0-signature.t
 SHA1 02b00a3a7d147d502c5371b771ed82cf0883e726 t/1-basic.t
 SHA1 c868ab19f04bc4bd48f174e397659c2576af84e5 t/2-icon.t
@@ -64,9 +63,9 @@ SHA1 ce6253c20da323a2e512fb30bc21c2acb3c56d26 t/hd.ico
 SHA1 695701d14a51c663a8b87c5a5adeefa9275f1413 t/par.exe
 SHA1 6ac8c5ef1c2d80904a39977fb92e5e94f15e23e0 t/par.ico
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (FreeBSD)
+Version: GnuPG v1.4.0 (GNU/Linux)
 
-iD8DBQFAWS8ktLPdNzw1AaARArsAAKCaEzadeXCk8KTYuGDin/i3samMUACeNx4v
-vA92B6abSic9kApgeijIdIE=
-=fjU1
+iD8DBQFEhwRXZCuimE51gxcRAuhYAJ0d7iDEcSPP42uGVr+rQ8z/1sfrlACgii2u
+QsGAYJig3DB9HpeosLvQuJk=
+=DM8p
 -----END PGP SIGNATURE-----

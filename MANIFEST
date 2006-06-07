@@ -9,7 +9,6 @@ inc/Module/Install/Metadata.pm
 inc/Module/Install/Scripts.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
-inc/Test/Builder.pm
 inc/Test/More.pm
 lib/Win32/Exe.pm
 lib/Win32/Exe/Base.pm

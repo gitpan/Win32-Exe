@@ -5,7 +5,7 @@
 use inc::Module::Install;
 
 name		('Win32-Exe');
-author		('Autrijus Tang <autrijus@autrijus.org>');
+author		('Audrey Tang <cpan@audreyt.org>');
 abstract	('Manipulate Win32 executable files');
 license		('perl');
 install_script	('script/exe_update.pl');

@@ -1,8 +1,8 @@
-# $File: /local/member/autrijus/Win32-Exe//lib/Win32/Exe.pm $ $Author: autrijus $
+# $File: /local/member/audreyt/Win32-Exe//lib/Win32/Exe.pm $ $Author: audreyt $
 # $Revision: #14 $ $Change: 3715 $ $Date: 2004-03-18T05:06:01.118230Z $
 
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.08';
+$Win32::Exe::VERSION = '0.09';
 
 =head1 NAME
 
@@ -10,8 +10,8 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.08 of Win32::Exe, released
-March 18, 2004.
+This document describes version 0.09 of Win32::Exe, released
+June, 7, 2006.
 
 =head1 SYNOPSIS
 
@@ -241,11 +241,11 @@ __END__
 
 =head1 AUTHORS
 
-Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>
+Audrey Tang E<lt>cpan@audreyt.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2004 by Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>.
+Copyright 2004, 2006 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
 
 This program is free software; you can redistribute it and/or 
 modify it under the same terms as Perl itself.
