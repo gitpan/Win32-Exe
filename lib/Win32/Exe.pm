@@ -2,7 +2,7 @@
 # $Revision: #14 $ $Change: 3715 $ $Date: 2004-03-18T05:06:01.118230Z $
 
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.09';
+$Win32::Exe::VERSION = '0.10';
 
 =head1 NAME
 
@@ -10,8 +10,8 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.09 of Win32::Exe, released
-June, 7, 2006.
+This document describes version 0.10 of Win32::Exe, released
+January 14, 2007.
 
 =head1 SYNOPSIS
 
@@ -34,6 +34,12 @@ June, 7, 2006.
     # Change it to a console application, then save to another .exe
     $exe->SetSubsystem('console');
     $exe->write('c:/windows/another.exe');
+    
+    # Add a manifest section
+    $exe->update( manifest => $mymanifestxml );
+    # or a default
+    $exe->update( defaultmanifest => 1 );
+    
 
 =head1 DESCRIPTION
 
@@ -153,6 +159,14 @@ sub default_info {
 
 sub update {
     my ($self, %args) = @_;
+    
+    if ($args{defaultmanifest}) {
+            $self->add_default_manifest();
+    }
+    
+    if (my $manifest = $args{manifest}) {
+        $self->set_manifest($manifest);
+    }
 
     if (my $icon = $args{icon}) {
 	my @icons = Win32::Exe::IconFile->new($icon)->icons;
@@ -235,6 +249,44 @@ sub set_version_info {
     $version->refresh;
 }
 
+sub manifest {
+    my ($self) = @_;
+    my $rsrc = $self->resource_section or return;
+    if( my $obj = $rsrc->first_object('Manifest') ) {
+        return $obj;
+    } else {
+        return $self->require_class('Resource::Manifest')->new;
+    }
+}    
+
+sub set_manifest {
+    my ($self, $xml) = @_;
+    my $rsrc = $self->resource_section;
+    my $name = eval { $rsrc->first_object('Manifest')->PathName } || '/#RT_MANIFEST/#1/#0';
+    $rsrc->remove( $name  );
+    my $manifest = $self->require_class('Resource::Manifest')->new;
+    $manifest->SetPathName( $name ); 
+    $manifest->set_parent( $rsrc );
+    $manifest->update_manifest( $xml );
+    $rsrc->insert($manifest->PathName, $manifest);
+    $rsrc->refresh;
+}
+
+sub add_default_manifest {
+    my ($self) = @_;
+    my $rsrc = $self->resource_section;
+    my $name = eval { $rsrc->first_object('Manifest')->PathName } || '/#RT_MANIFEST/#1/#0';
+    $rsrc->remove( $name  );
+    my $manifest = $self->require_class('Resource::Manifest')->new;
+    my $xml = $manifest->default_manifest;
+    $manifest->SetPathName( $name ); 
+    $manifest->set_parent( $rsrc );
+    $manifest->update_manifest( $xml );
+    $rsrc->insert($manifest->PathName, $manifest);
+    $rsrc->refresh;
+    $self->write;
+}
+
 1;
 
 __END__
@@ -243,9 +295,13 @@ __END__
 
 Audrey Tang E<lt>cpan@audreyt.orgE<gt>
 
+Mark Dootson
+
+Steffen Mueller E<lt>smueller@cpan.orgE<gt>
+
 =head1 COPYRIGHT
 
-Copyright 2004, 2006 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
+Copyright 2004-2007 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
 
 This program is free software; you can redistribute it and/or 
 modify it under the same terms as Perl itself.
