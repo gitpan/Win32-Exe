@@ -1,4 +1,8 @@
 ----------------------------------------------------------------------
+Release 0.11:
+* Applied patch by Mark Dootson to change the default exe manifest.
+
+----------------------------------------------------------------------
 Release 0.10:
 * Updated Module::Install to 0.64.
 * Applied patch by Mark Dootson to add support for exe manifests.

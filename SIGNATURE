@@ -14,7 +14,7 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 6bdf8ce32e7b74d7257c73b05a3cbecc7f0063f0 Changes
+SHA1 fbabd68846578e1919bdcb1711c89ba26afa28b7 Changes
 SHA1 705485695f490c28d7a8ac16c5be22865325dc58 MANIFEST
 SHA1 c3a61b4308cabcfb067a88218676a1b6d93865cf META.yml
 SHA1 3b7411dde1a384ca25d19b3b2920bdc2176997a1 Makefile.PL
@@ -30,7 +30,7 @@ SHA1 b384bd42bc6263dc56d04a884ef4e5fe340049f8 inc/Module/Install/Scripts.pm
 SHA1 0c2118868ef82ac517eb6d9c3bd93e6eb9bbf83e inc/Module/Install/Win32.pm
 SHA1 e827d6d43771032fa3df35c0ad5e5698d0e54cda inc/Module/Install/WriteAll.pm
 SHA1 45d0149fee8d12082d0aa00fd9202f4b29126824 inc/Test/More.pm
-SHA1 cb481a4645a7eb9e06b0d6479623e09ea1dee83b lib/Win32/Exe.pm
+SHA1 91cb1b1716a0aa148e2c006e12daa7c739904424 lib/Win32/Exe.pm
 SHA1 70c78807056ac205684cff00dc7264d7bd4a7b14 lib/Win32/Exe/Base.pm
 SHA1 8f3d4da587d7e10e40f61f42f8912718b9c99932 lib/Win32/Exe/DataDirectory.pm
 SHA1 a436533992a140d10312f965b537a84a7bca7283 lib/Win32/Exe/DebugDirectory.pm
@@ -42,7 +42,7 @@ SHA1 22ec92608ff59a906b0bf43ad5b95ee088ceef34 lib/Win32/Exe/PE/Header/PE32.pm
 SHA1 d65c2c301b7c15557e3a10c7ebc121c069341524 lib/Win32/Exe/Resource.pm
 SHA1 bd8983557af108a422b892ee60f4df8f942a45f1 lib/Win32/Exe/Resource/GroupIcon.pm
 SHA1 d870e82e160190dca4f716a31056f903195ce793 lib/Win32/Exe/Resource/Icon.pm
-SHA1 e82bbaa0d8ae5455a27c5c92715cc8bfe641dfe4 lib/Win32/Exe/Resource/Manifest.pm
+SHA1 9d672c2b044f05aa8e4fff085cc58273f3bd6f62 lib/Win32/Exe/Resource/Manifest.pm
 SHA1 dba7269d5752e134555f2363abb4b36f64dc9c3e lib/Win32/Exe/Resource/Version.pm
 SHA1 d640575ca218f79673b9651ae4e889e1c8ce6b65 lib/Win32/Exe/ResourceData.pm
 SHA1 c58f81feeec84e72394a61262c1b4fa33a96a115 lib/Win32/Exe/ResourceEntry.pm
@@ -67,7 +67,7 @@ SHA1 6ac8c5ef1c2d80904a39977fb92e5e94f15e23e0 t/par.ico
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.3 (GNU/Linux)
 
-iD8DBQFFqgCGZCuimE51gxcRArhYAKC5vU3oy8RuN47EQoZPv5LRbfZVgACeNdK1
-cmMXzmiiW+EWauaaL82Lz3w=
-=SHAr
+iD8DBQFF4AwLZCuimE51gxcRAi1VAKCXYLTHll3cZ/op7U/LNBsapVCuVgCfV76O
+v3Y8GugEhixCbWOwNPdBlKc=
+=P/sI
 -----END PGP SIGNATURE-----

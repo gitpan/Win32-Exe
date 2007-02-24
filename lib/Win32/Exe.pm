@@ -1,8 +1,5 @@
-# $File: /local/member/audreyt/Win32-Exe//lib/Win32/Exe.pm $ $Author: audreyt $
-# $Revision: #14 $ $Change: 3715 $ $Date: 2004-03-18T05:06:01.118230Z $
-
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.10';
+$Win32::Exe::VERSION = '0.11';
 
 =head1 NAME
 
