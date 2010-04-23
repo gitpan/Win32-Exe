@@ -6,15 +6,15 @@ package Win32::Exe::Resource::Icon;
 use strict;
 use base 'Win32::Exe::Resource';
 use constant FORMAT => (
-    Width	    => 'C',
-    Height	    => 'C',
-    ColorCount	    => 'C',
-    _		    => 'C',
-    Planes	    => 'v',
-    BitCount	    => 'v',
-    ImageSize	    => 'V',
-    I_RVA1	    => 'v',
-    I_RVA2	    => 'v',
+    Width       => 'C',
+    Height      => 'C',
+    ColorCount      => 'C',
+    _           => 'C',
+    Planes      => 'v',
+    BitCount        => 'v',
+    ImageSize       => 'V',
+    I_RVA1      => 'v',
+    I_RVA2      => 'v',
 );
 
 sub Id {

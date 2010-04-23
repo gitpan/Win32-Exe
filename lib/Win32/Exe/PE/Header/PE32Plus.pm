@@ -1,13 +1,14 @@
-# $File: //local/member/autrijus/Win32-Exe/lib/Win32/Exe/PE/Header/PE32.pm $ $Author: autrijus $
-# $Revision: #8 $ $Change: 1130 $ $Date: 2004-02-17T15:40:29.640821Z $
+#--------------------------------------------------------------------
+# 64 bit PE+ header as per 'Microsoft PE and COFF Specification' from
+# http://www.microsoft.com/whdc/system/platform/firmware/PECOFF.mspx
+#--------------------------------------------------------------------
 
-package Win32::Exe::PE::Header::PE32;
-
+package Win32::Exe::PE::Header::PE32Plus;
 use strict;
 use base 'Win32::Exe::PE::Header';
+
 use constant SUBFORMAT => (
-    BaseOfData      => 'V',
-    ImageBase       => 'V',
+    ImageBase       => 'Q',
     SectionAlign    => 'V',
     FileAlign       => 'V',
     OSMajor     => 'v',
@@ -22,10 +23,10 @@ use constant SUBFORMAT => (
     FileChecksum    => 'V',
     SubsystemTypeId => 'v',
     DLLFlags        => 'v',
-    StackReserve    => 'V',
-    StackCommit     => 'V',
-    HeapReserve     => 'V',
-    HeapCommit      => 'V',
+    StackReserve    => 'Q',
+    StackCommit     => 'Q',
+    HeapReserve     => 'Q',
+    HeapCommit      => 'Q',
     LoaderFlags     => 'V',
     NumDataDirs     => 'V',
     'DataDirectory' => [
@@ -44,6 +45,13 @@ use constant ST_TO_ID => {
     map { (SUBSYSTEM_TYPES->[$_] => $_) } (0 .. $#{+SUBSYSTEM_TYPES})
 };
 use constant ID_TO_ST => { reverse %{+ST_TO_ID} };
+
+# Quads are endian?
+use Config;
+die 'Cannot parse 64 bit PE+ headers on big endian systems' if $Config{byteorder} !~ /^1234/;
+
+eval { my $qp = pack('Q', 0); };
+die 'Cannot parse 64 bit PE+ headers - no Quad support in this Perl' if $@ =~ /Invalid type/i; 
 
 sub st_to_id {
     my ($self, $name) = @_;
@@ -66,8 +74,8 @@ sub SetSubsystem {
     $self->SetSubsystemTypeId($self->st_to_id($type));
 }
 
-
-sub ExpectedOptHeaderSize { 224 };
+sub ExpectedOptHeaderSize { 240 };
+    
 
 
 1;

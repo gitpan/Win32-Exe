@@ -6,27 +6,27 @@ package Win32::Exe::Section;
 use strict;
 use base 'Win32::Exe::Base';
 use constant FORMAT => (
-    Name	    => 'Z8',
-    VirtualSize	    => 'V',
+    Name        => 'Z8',
+    VirtualSize     => 'V',
     VirtualAddress  => 'V',
-    FileSize	    => 'V',
-    FileOffset	    => 'V',
-    RelocOffset	    => 'V',
+    FileSize        => 'V',
+    FileOffset      => 'V',
+    RelocOffset     => 'V',
     LineNumOffset   => 'V',
-    NumReloc	    => 'v',
-    NumLineNum	    => 'v',
-    Flags	    => 'V',
+    NumReloc        => 'v',
+    NumLineNum      => 'v',
+    Flags       => 'V',
 );
 use constant DISPATCH_FIELD => 'Name';
 use constant DISPATCH_TABLE => (
-    '.text'	=> 'Section::Code',
-    '.debug'	=> 'Section::Debug',
-    '.data'	=> 'Section::Data',
-    '.rdata'	=> 'Section::Data',
-    '.bss'	=> 'Section::Data',
-    '.edata'	=> 'Section::Exports',
-    '.idata'	=> 'Section::Imports',
-    '.rsrc'	=> 'Section::Resources',
+    '.text' => 'Section::Code',
+    '.debug'    => 'Section::Debug',
+    '.data' => 'Section::Data',
+    '.rdata'    => 'Section::Data',
+    '.bss'  => 'Section::Data',
+    '.edata'    => 'Section::Exports',
+    '.idata'    => 'Section::Imports',
+    '.rsrc' => 'Section::Resources',
 );
 
 use constant CONTAINS_CODE  => 0x20;
@@ -36,14 +36,14 @@ use constant CONTAINS_UDATA => 0x80;
 sub Data {
     my ($self) = @_;
     $self->{data} ||= do {
-	my $v_size = $self->VirtualSize;
-	my $f_size = $self->FileSize or return("\0" x $v_size);
+    my $v_size = $self->VirtualSize;
+    my $f_size = $self->FileSize or return("\0" x $v_size);
 
-	$f_size = $v_size if $v_size < $f_size;
+    $f_size = $v_size if $v_size < $f_size;
 
-	my $data = $self->parent->substr($self->FileOffset, $f_size);
-	$data .= ("\x0" x ($v_size - length($data)));
-	$data;
+    my $data = $self->parent->substr($self->FileOffset, $f_size);
+    $data .= ("\x0" x ($v_size - length($data)));
+    $data;
     }
 }
 
@@ -52,13 +52,16 @@ sub SetData {
     my $pad_size = length($1) if $data =~ s/(\0*)\z//;
 
     my $exe = $self->parent;
-    $exe->OptHeaderSize == 224 or die "Unsupported binary format";
-
+    my $act_headersize = $exe->OptHeaderSize;
+    my $exp_headersize = $exe->ExpectedOptHeaderSize;
+    
+    ($act_headersize && ( $act_headersize == $exp_headersize )) or die "Unsupported binary format: headersize $act_headersize ne $exp_headersize";
+    
     my $index = $self->sibling_index;
     my $data_size = length($data);
 
-    my $f_size	= $self->align($data_size, $exe->FileAlign);
-    my $v_size	= $self->align($data_size, $exe->SectionAlign);
+    my $f_size  = $self->align($data_size, $exe->FileAlign);
+    my $v_size  = $self->align($data_size, $exe->SectionAlign);
     my $f_extra = $f_size - $self->FileSize;
     my $v_extra = $v_size - $self->align($self->VirtualSize, $exe->SectionAlign);
 
@@ -79,9 +82,9 @@ sub update_size {
     my $v_size = $self->VirtualSize;
 
     foreach my $dir ($exe->data_directories) {
-	next unless $dir->VirtualAddress == $v_addr;
-	$dir->SetSize($v_size);
-	$dir->refresh;
+    next unless $dir->VirtualAddress == $v_addr;
+    $dir->SetSize($v_size);
+    $dir->refresh;
     }
 }
 
@@ -95,22 +98,22 @@ sub pad_data {
 
     my $exe_size = $exe->size;
     if ($exe_size > $offset) {
-	my $buf = $exe->substr($offset, ($exe_size - $offset));
-	$exe->substr($offset + $f_extra, length($buf), $buf);
+    my $buf = $exe->substr($offset, ($exe_size - $offset));
+    $exe->substr($offset + $f_extra, length($buf), $buf);
     }
 
     $exe->set_size($exe_size + $f_extra);
     if ($f_extra > 0) {
-	$exe->SetData($exe->Data . ("\0" x $f_extra));
+    $exe->SetData($exe->Data . ("\0" x $f_extra));
     }
     else {
-	$exe->SetData(substr($exe->Data, 0, $f_extra));
+    $exe->SetData(substr($exe->Data, 0, $f_extra));
     }
 
     my $index = $self->sibling_index;
     foreach my $section (@{$self->siblings}) {
-	next if $section->sibling_index <= $index;
-	$section->update_offset($f_extra, $v_extra);
+    next if $section->sibling_index <= $index;
+    $section->update_offset($f_extra, $v_extra);
     }
 
     $self->SetFileSize($self->FileSize + $f_extra);
@@ -133,8 +136,8 @@ sub update_offset {
     $self->SetFileOffset( $self->FileOffset + $f_extra );
 
     foreach my $dir ($exe->data_directories) {
-	next unless $dir->VirtualAddress == $v_addr;
-	$dir->SetVirtualAddress($self->VirtualAddress);
+    next unless $dir->VirtualAddress == $v_addr;
+    $dir->SetVirtualAddress($self->VirtualAddress);
     }
 }
 

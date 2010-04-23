@@ -7,70 +7,91 @@ use FindBin;
 use lib "$FindBin::Bin/../inc";
 use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/../../Parse-Binary/lib";
-use Test::More tests => 21;
+use Test::More tests => 43;
+
+eval { my $qp = pack('Q', 0); };
+my $canpeplus = ( $@ =~ /Invalid type/i ) ? 0 : 1;
 
 $SIG{__DIE__} = sub { use Carp; Carp::confess(@_) };
 $SIG{__WARN__} = sub { use Carp; Carp::cluck(@_) };
 
 use_ok('Win32::Exe');
 
-my $file = "$FindBin::Bin/par.exe";
-ok(my $orig = Win32::Exe->read_file($file), 'read_file');
+for ( qw( 32  64 ) ) {
+    my $PEtype = $_;
+    
+    SKIP: { 
+        eval { my $qp = pack('Q', 0); };
+        skip 'Cannot parse 64 bit PE+ header - no Quad support in this Perl', 21 if(($PEtype == 64) && (!$canpeplus));
+        
+        my $file = "$FindBin::Bin/winexe$PEtype.exe";
 
-my $exe = Win32::Exe->new($file);
-isa_ok($exe, 'Win32::Exe');
-is($exe->dump, $orig, 'roundtrip');
+        my @expectedsections = ( $PEtype == 32 ) ? qw( .text .data .rdata .bss .idata .rsrc ) : qw( .text .data .rdata .bss .idata .CRT .tls .rsrc);
+        my $expectedheadersize = ( $PEtype == 32 ) ? 224 : 240;
 
-is($exe->Subsystem, 'console', 'Subsystem');
-$exe->SetSubsystem('windows');
-is($exe->Subsystem, 'windows', 'SetSubsystem');
-$exe->SetSubsystem('CONSOLE');
-is($exe->Subsystem, 'console', 'SetSubsystem with uppercase string');
 
-is_deeply(
-    [map $_->Name, $exe->sections],
-    [qw( .text .rdata .data .rsrc )],
-    'sections'
-);
+        ok(my $orig = Win32::Exe->read_file($file), 'read_file');
 
-$exe->refresh;
-is($exe->dump, $orig, 'roundtrip after refresh');
+        my $exe = Win32::Exe->new($file);
 
-my ($sections) = $exe->sections;
-isa_ok($sections, 'Win32::Exe::Section');
-$sections->refresh;
-is($exe->dump, $orig, 'roundtrip after sections refresh');
+        is($exe->ExpectedOptHeaderSize, $expectedheadersize, qq(Type $PEtype expected headersize));
 
-my $rsrc = $exe->resource_section;
-isa_ok($rsrc, 'Win32::Exe::Section::Resources');
-$rsrc->refresh;
-is($exe->dump, $orig, 'roundtrip after resources refresh');
+        isa_ok($exe, 'Win32::Exe');
+        is($exe->dump, $orig, qq(rountrip PE type $PEtype));
 
-is_deeply(
-    [$rsrc->names],
-    [
-	'/#RT_GROUP_ICON/#1/#0',
-	'/#RT_ICON/#1/#0',
-	'/#RT_ICON/#2/#0',
-	'/#RT_VERSION/#1/#0',
-    ],
-    'resource names'
-);
+        is($exe->Subsystem, 'console', 'Subsystem');
+        $exe->SetSubsystem('windows');
+        is($exe->Subsystem, 'windows', 'SetSubsystem');
+        $exe->SetSubsystem('CONSOLE');
+        is($exe->Subsystem, 'console', 'SetSubsystem with uppercase string');
 
-my $group = $rsrc->first_object('GroupIcon');
-is($group->PathName, '/#RT_GROUP_ICON/#1/#0', 'pathname');
+        is_deeply(
+            [map $_->Name, $exe->sections],
+            [ @expectedsections ],
+            'sections'
+        );
 
-my $version = $rsrc->first_object('Version');
-is($version->info->[0], 'VS_VERSION_INFO', 'version->info');
-is($version->get('FileVersion'), '0,0,0,0', 'version->get');
+        $exe->refresh;
+        is($exe->dump, $orig, qq(roundtrip after refresh 1 $PEtype));
 
-$version->set('FileVersion', '1,0,0,0');
-is($version->get('FileVersion'), '1,0,0,0', 'version->set took effect');
-$version->refresh;
-is($version->get('FileVersion'), '1,0,0,0', 'version->set remains after refresh');
+        my ($sections) = $exe->sections;
+        isa_ok($sections, 'Win32::Exe::Section');
+        $sections->refresh;
+        is($exe->dump, $orig, qq(roundtrip after refresh 2 $PEtype));
 
-isnt(($exe->dump), $orig, 'dump changed after resources refresh');
-$orig = $exe->dump;
-is(($exe->dump), $orig, 'roundtrip after resource refresh');
+        my $rsrc = $exe->resource_section;
+        isa_ok($rsrc, 'Win32::Exe::Section::Resources');
+        $rsrc->refresh;
+        is($exe->dump, $orig, qq(roundtrip after refresh 3 $PEtype));
+
+        my @expectresources = ('/#RT_GROUP_ICON/#1/#0', '/#RT_ICON/#1/#0', '/#RT_ICON/#2/#0', '/#RT_MANIFEST/#1/#0', '/#RT_VERSION/#1/#0',);
+
+        is_deeply(
+            [$rsrc->names],
+            [ @expectresources ],
+            qq(resource names : $PEtype)
+        );
+
+        my $group = $rsrc->first_object('GroupIcon');
+        my $expectginame = '/#RT_GROUP_ICON/#1/#0';
+        is($group->PathName, $expectginame, 'group pathname');
+
+        my $version = $rsrc->first_object('Version');
+        is($version->info->[0], 'VS_VERSION_INFO', 'version->info');
+        is($version->get('FileVersion'), '0,0,0,0', 'version->get');
+
+        $version->set('FileVersion', '1,0,0,0');
+        is($version->get('FileVersion'), '1,0,0,0', 'version->set took effect');
+        $version->refresh;
+        is($version->get('FileVersion'), '1,0,0,0', 'version->set remains after refresh');
+
+
+        isnt(($exe->dump), $orig, qq(dump changed after resource refresh 4 $PEtype));
+        $orig = $exe->dump;
+        is(($exe->dump), $orig, qq(roundtrip after refresh 5 $PEtype));
+    
+    }
+
+}
 
 1;

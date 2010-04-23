@@ -6,8 +6,8 @@ package Win32::Exe::ResourceEntry;
 use strict;
 use base 'Win32::Exe::Base';
 use constant FORMAT => (
-    Data	    => 'V',
-    E_RVA	    => 'V',
+    Data        => 'V',
+    E_RVA       => 'V',
 );
 use constant HIGH_BIT => 0x80_00_00_00;
 use Win32::Exe::ResourceData;

@@ -6,7 +6,7 @@ package Win32::Exe::Resource::Version;
 use strict;
 use base 'Win32::Exe::Resource';
 use constant FORMAT => (
-    Data		=> 'a*',
+    Data        => 'a*',
 );
 use constant FIXED_INFO => [qw(
     Signature StrucVersion FileVersionMS FileVersionLS
@@ -72,24 +72,24 @@ sub encode_info {
     my ($type, $vallen);
 
     if (ref $val) {
-	$type   = 0;                   # binary
-	$val    = pack('V*', @$val);
-	$vallen = length($val);
+    $type   = 0;                   # binary
+    $val    = pack('V*', @$val);
+    $vallen = length($val);
     }
     elsif (length $val) {
-	$type   = 1;                          # text;
-	$val    = $self->encode_ucs2("$val\0");
-	$vallen = length($val) / 2;
+    $type   = 1;                          # text;
+    $val    = $self->encode_ucs2("$val\0");
+    $vallen = length($val) / 2;
     }
     else {
-	$type   = 1;
-	$vallen = 0;
+    $type   = 1;
+    $vallen = 0;
     }
 
     my @sub_objects;
     foreach my $sub_info (@$info) {
-	my $obj = $self->encode_info($sub_info);
-	push(@sub_objects, $obj);
+    my $obj = $self->encode_info($sub_info);
+    push(@sub_objects, $obj);
     }
 
     my $buf = pack('v3', 0, $vallen, $type) . $key;
@@ -97,8 +97,8 @@ sub encode_info {
     $buf .= $val;
 
     foreach my $sub_object (@sub_objects) {
-	$buf .= $self->pad($buf, 4);
-	$buf .= $sub_object;
+    $buf .= $self->pad($buf, 4);
+    $buf .= $sub_object;
     }
 
     substr($buf, 0, 2, pack('v', length($buf)));
@@ -118,7 +118,7 @@ sub decode_info {
 
     my $endkey = index($buf, "\0\0", 6);
     while ($endkey > 0 and ($endkey % 2)) {
-	$endkey = index($buf, "\0\0", $endkey + 1);
+    $endkey = index($buf, "\0\0", $endkey + 1);
     }
 
     die 'Invalid endkey' if $endkey < 6 or $endkey > $len - $vallen;;
@@ -131,26 +131,26 @@ sub decode_info {
     substr($buf, 0, $endkey, '');
 
     if ($vallen) {
-	$vallen *= 2 if $level == 4;    # only for strings
-	my $val = substr($buf, 0, $vallen);
-	if ($type) {
-	    $val = $self->decode_ucs2($val);
-	    $val =~ s/\0\z//;
-	}
-	else {
-	    $val = [ unpack('V*', $val) ];
-	}
-	push(@res, $val);
-	$vallen = $self->align($vallen, 4);
-
-	substr($buf, 0, $vallen) = '';
+    $vallen *= 2 if $level == 4;    # only for strings
+    my $val = substr($buf, 0, $vallen);
+    if ($type) {
+        $val = $self->decode_ucs2($val);
+        $val =~ s/\0\z//;
     }
     else {
-	push(@res, '');
+        $val = [ unpack('V*', $val) ];
+    }
+    push(@res, $val);
+    $vallen = $self->align($vallen, 4);
+
+    substr($buf, 0, $vallen) = '';
+    }
+    else {
+    push(@res, '');
     }
 
     while (length $buf) {
-	push(@res, $self->decode_info($buf, $level + 1));
+    push(@res, $self->decode_info($buf, $level + 1));
     }
 
     return \@res;
@@ -177,7 +177,7 @@ sub check_sub_info {
     return unless !ref($info->[0]) and length($info->[0]);
     return unless !ref($info->[1]) or UNIVERSAL::isa($info->[1], 'ARRAY');
     foreach my $idx (2 .. @$info - 1) {
-	return 0 unless $self->check_sub_info($info->[$idx]);
+    return 0 unless $self->check_sub_info($info->[$idx]);
     }
     return 1;
 }
@@ -189,42 +189,42 @@ sub get {
     my $info = $self->info;
 
     if ($name eq '/') {
-	return undef unless ref $info->[1];
-	return $info->[1];
+    return undef unless ref $info->[1];
+    return $info->[1];
     }
 
     my $fixed = $self->fi_to_id($name);
     if (defined $fixed) {
-	my $struct = $info->[1];
-	return undef unless $struct && ref($struct);
-	return $struct->[$fixed];
+    my $struct = $info->[1];
+    return undef unless $struct && ref($struct);
+    return $struct->[$fixed];
     }
 
     $fixed = $self->fi_to_id($name.'MS');
     if (defined $fixed) {
-	my $struct = $info->[1];
-	return undef unless $struct && ref($struct);
-	my $ms = $struct->[$fixed];
-	my $ls = $struct->[ $self->fi_to_id($name.'LS') ];
-	return join(',', $self->split_dword($ms), $self->split_dword($ls));
+    my $struct = $info->[1];
+    return undef unless $struct && ref($struct);
+    my $ms = $struct->[$fixed];
+    my $ls = $struct->[ $self->fi_to_id($name.'LS') ];
+    return join(',', $self->split_dword($ms), $self->split_dword($ls));
     }
 
     my $s;
     if ($name =~ s!^/!!) {
-	$s = $info;
-	while ($name =~ s!^([^/]+)/!!) {
-	    $s = $self->find_info($s, $1) or return undef;
-	}
+    $s = $info;
+    while ($name =~ s!^([^/]+)/!!) {
+        $s = $self->find_info($s, $1) or return undef;
+    }
     }
     else {
-	$s = $self->find_info($info, 'StringFileInfo') or return undef;
-	if (my $cur_trans = $self->{cur_trans}) {
-	    $s = $self->find_info($s, $cur_trans, 1) or return undef;
-	}
-	else {
-	    $s = $s->[2] or return undef;
-	    $self->{cur_trans} = $s->[0];
-	}
+    $s = $self->find_info($info, 'StringFileInfo') or return undef;
+    if (my $cur_trans = $self->{cur_trans}) {
+        $s = $self->find_info($s, $cur_trans, 1) or return undef;
+    }
+    else {
+        $s = $s->[2] or return undef;
+        $self->{cur_trans} = $s->[0];
+    }
     }
 
     $s = $self->find_info($s, $name) or return undef;
@@ -238,90 +238,90 @@ sub set {
     my $info = $self->info;
 
     if ($name eq '/') {
-	if (!defined $value) {
-	    $info->[1] = '';
-	}
-	elsif (UNIVERSAL::isa($value, 'ARRAY') and @$value == 13) {
-	    $info->[1] = $value;
-	}
-	else {
-	    die 'Invalid array assigned';
-	}
+    if (!defined $value) {
+        $info->[1] = '';
+    }
+    elsif (UNIVERSAL::isa($value, 'ARRAY') and @$value == 13) {
+        $info->[1] = $value;
+    }
+    else {
+        die 'Invalid array assigned';
+    }
     }
 
     my $fixed = $self->fi_to_id($name);
     if (defined $fixed) {
-	$value = oct($value) if $value =~ /^0/;
-	$info->[1][$fixed] = $value;
-	return;
+    $value = oct($value) if $value =~ /^0/;
+    $info->[1][$fixed] = $value;
+    return;
     }
 
     $fixed = $self->fi_to_id($name.'MS');
     if (defined $fixed) {
-	my @value = split(/[,.]/, $value, -1);
-	if (@value == 4) {
-	    $value[0] = ($value[0] << 16) | $value[1];
-	    $value[1] = ($value[2] << 16) | $value[3];
-	    splice(@value, 2);
-	}
+    my @value = split(/[,.]/, $value, -1);
+    if (@value == 4) {
+        $value[0] = ($value[0] << 16) | $value[1];
+        $value[1] = ($value[2] << 16) | $value[3];
+        splice(@value, 2);
+    }
 
-	die 'Invalid MS/LS value' if @value != 2;
-	$info->[1][$fixed] = $value[0] || 0;
-	$info->[1][$self->fi_to_id($name.'LS')] = $value[1] || 0;
-	return;
+    die 'Invalid MS/LS value' if @value != 2;
+    $info->[1][$fixed] = $value[0] || 0;
+    $info->[1][$self->fi_to_id($name.'LS')] = $value[1] || 0;
+    return;
     }
 
     my $container = $info;
 
     if ($name =~ s!^/!!) {
-	while ($name =~ s!^([^/]+)/!!) {
-	    my $n = $1;
-	    my $s = $self->find_info($container, $n);
-	    unless ($s) {
-		$s = [ $n => '' ];
-		push(@$container, $s);
-	    }
-	    $container = $s;
-	}
+    while ($name =~ s!^([^/]+)/!!) {
+        my $n = $1;
+        my $s = $self->find_info($container, $n);
+        unless ($s) {
+        $s = [ $n => '' ];
+        push(@$container, $s);
+        }
+        $container = $s;
+    }
     }
     else {
-	my $s = $self->find_info($container, 'StringFileInfo');
-	unless ($s) {
-	    $s = [ StringFileInfo => '' ];
-	    push(@$container, $s);
-	}
-	$container = $s;
+    my $s = $self->find_info($container, 'StringFileInfo');
+    unless ($s) {
+        $s = [ StringFileInfo => '' ];
+        push(@$container, $s);
+    }
+    $container = $s;
 
-	my $cur_trans = $self->{cur_trans};
-	unless ($cur_trans) {
-	    if (@$container > 2) {
-		$cur_trans = $container->[2][0];
-	    }
-	    else {
-		$cur_trans = '000004B0';    # Language Neutral && CP 1200 = Unicode
-	    }
-	    $self->{cur_trans} = $cur_trans;
-	}
+    my $cur_trans = $self->{cur_trans};
+    unless ($cur_trans) {
+        if (@$container > 2) {
+        $cur_trans = $container->[2][0];
+        }
+        else {
+        $cur_trans = '000004B0';    # Language Neutral && CP 1200 = Unicode
+        }
+        $self->{cur_trans} = $cur_trans;
+    }
 
-	$s = $self->find_info($container, $cur_trans, 1);
-	unless ($s) {
-	    $s = [ $cur_trans => '' ];
-	    push(@$container, $s);
-	}
-	$container = $s;
+    $s = $self->find_info($container, $cur_trans, 1);
+    unless ($s) {
+        $s = [ $cur_trans => '' ];
+        push(@$container, $s);
+    }
+    $container = $s;
     }
 
     my ($kv, $kv_index) = $self->find_info($container, $name);
     unless ($kv) {
-	push(@$container, [ $name => $value ]) if defined $value;
-	return;
+    push(@$container, [ $name => $value ]) if defined $value;
+    return;
     }
 
     if (defined $value) {
-	$kv->[1] = $value;
+    $kv->[1] = $value;
     }
     else {
-	splice(@$container, $kv_index, 1);
+    splice(@$container, $kv_index, 1);
     }
 }
 
@@ -335,21 +335,21 @@ sub find_info {
     my $index;
 
     if ($name =~ /^#(\d+)$/) {
-	$index = $1 - 1 + 2;
-	$index = undef if $index < 2 || $index >= @$info;
+    $index = $1 - 1 + 2;
+    $index = undef if $index < 2 || $index >= @$info;
     }
     else {
-	for (2 .. @$info - 1) {
-	    my $e = $info->[$_];
-	    if ($e->[0] eq $name or $ignore && lc($e->[0]) eq lc($name)) {
-		$index = $_;
-		last;
-	    }
-	}
+    for (2 .. @$info - 1) {
+        my $e = $info->[$_];
+        if ($e->[0] eq $name or $ignore && lc($e->[0]) eq lc($name)) {
+        $index = $_;
+        last;
+        }
+    }
     }
     if ($index) {
-	return $info->[$index] unless wantarray;
-	return ($info->[$index], $index);
+    return $info->[$index] unless wantarray;
+    return ($info->[$index], $index);
     }
 
     return undef unless wantarray;
