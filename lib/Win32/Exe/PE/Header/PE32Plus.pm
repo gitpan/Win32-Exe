@@ -8,7 +8,7 @@ use strict;
 use base 'Win32::Exe::PE::Header';
 
 use constant SUBFORMAT => (
-    ImageBase       => 'Q',
+    ImageBase       => 'a8',
     SectionAlign    => 'V',
     FileAlign       => 'V',
     OSMajor     => 'v',
@@ -23,10 +23,10 @@ use constant SUBFORMAT => (
     FileChecksum    => 'V',
     SubsystemTypeId => 'v',
     DLLFlags        => 'v',
-    StackReserve    => 'Q',
-    StackCommit     => 'Q',
-    HeapReserve     => 'Q',
-    HeapCommit      => 'Q',
+    StackReserve    => 'a8',
+    StackCommit     => 'a8',
+    HeapReserve     => 'a8',
+    HeapCommit      => 'a8',
     LoaderFlags     => 'V',
     NumDataDirs     => 'V',
     'DataDirectory' => [
@@ -45,13 +45,6 @@ use constant ST_TO_ID => {
     map { (SUBSYSTEM_TYPES->[$_] => $_) } (0 .. $#{+SUBSYSTEM_TYPES})
 };
 use constant ID_TO_ST => { reverse %{+ST_TO_ID} };
-
-# Quads are endian?
-use Config;
-die 'Cannot parse 64 bit PE+ headers on big endian systems' if $Config{byteorder} !~ /^1234/;
-
-eval { my $qp = pack('Q', 0); };
-die 'Cannot parse 64 bit PE+ headers - no Quad support in this Perl' if $@ =~ /Invalid type/i; 
 
 sub st_to_id {
     my ($self, $name) = @_;
@@ -76,6 +69,5 @@ sub SetSubsystem {
 
 sub ExpectedOptHeaderSize { 240 };
     
-
 
 1;

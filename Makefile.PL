@@ -14,7 +14,8 @@ version_from    ('lib/Win32/Exe.pm');
 requires    (
     perl        => '5.6.0',
     'Parse::Binary' => 0.05,
-    'XML::Simple'   => 2.18
+    'XML::Simple'   => 2.18,
+    'XML::Parser'   => 2.36,
 );
 build_requires  ('Test::More', 'File::Copy' );
 

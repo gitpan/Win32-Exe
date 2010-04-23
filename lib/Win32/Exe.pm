@@ -1,5 +1,5 @@
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.12_01';
+$Win32::Exe::VERSION = '0.12_03';
 
 =head1 NAME
 
@@ -7,8 +7,8 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.12_01 of Win32::Exe, released
-April 22, 2010.
+This document describes version 0.12_03 of Win32::Exe, released
+April 23, 2010.
 
 =head1 SYNOPSIS
 

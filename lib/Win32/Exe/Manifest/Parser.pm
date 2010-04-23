@@ -26,8 +26,8 @@ Win32::Exe::Manifest::Parser - MSWin Application and Assembly manifest handling
 
 =head1 VERSION
 
-This document describes version 0.12_01 of Win32::Exe::Manifest::Parser, released
-April 22, 2010. 
+This document describes version 0.01 of Win32::Exe::Manifest::Parser, released
+April 23, 2010. 
 
 =head1 DESCRIPTION
 
