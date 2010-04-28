@@ -25,7 +25,7 @@ use Exporter;
 use base qw( Exporter );
 use Carp;
 
-our $VERSION = '0.12_03';
+our $VERSION = '0.13';
 
 =head1 NAME
 
@@ -33,8 +33,8 @@ Win32::Exe::Manifest - MSWin Application and Assembly manifest handling
 
 =head1 VERSION
 
-This document describes version 0.12_03 of Win32::Exe::Manifest, released
-April 23, 2010.
+This document describes version 0.13 of Win32::Exe::Manifest, released
+April 28, 2010.
 
 =head1 SYNOPSIS
 
@@ -188,6 +188,37 @@ sub get_assembly_name {
     my($self) = @_;
     my $ref = $self->refhash();
     return (exists($ref->{assembly}->[0]->{assemblyIdentity}->[0]->{name})) ? $ref->{assembly}->[0]->{assemblyIdentity}->[0]->{name} : undef;
+}
+
+=head3 set_assembly_description
+
+    $manifest->set_assembly_description('My Application Description');
+
+Set the application description. The description is an informative string.
+
+
+=head3 get_assembly_decription
+
+    my $desc = $manifest->get_assembly_description;
+
+Return the assembly description from the manifest.
+
+
+=cut
+
+sub set_assembly_description {
+    my($self, $desc) = @_;
+    my $valuename = $self->default_content;
+    $self->refhash()->{assembly}->[0]->{description}->[0]->{$valuename} = $desc;
+    my $errors = $self->validate_errors;
+    croak('Manifest XML had errors following set description: ' . $errors) if $errors;
+}
+
+sub get_assembly_description {
+    my($self) = @_;
+    my $valuename = $self->default_content;
+    my $ref = $self->refhash();
+    return (exists($ref->{assembly}->[0]->{description}->[0]->{$valuename})) ? $ref->{assembly}->[0]->{description}->[0]->{$valuename} : undef;
 }
 
 =head3 set_assembly_version

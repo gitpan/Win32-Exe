@@ -1,5 +1,5 @@
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.12_03';
+$Win32::Exe::VERSION = '0.13';
 
 =head1 NAME
 
@@ -7,8 +7,8 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.12_03 of Win32::Exe, released
-April 23, 2010.
+This document describes version 0.13 of Win32::Exe, released
+April 28, 2010.
 
 =head1 SYNOPSIS
 
@@ -275,12 +275,32 @@ sub has_manifest {
 }
 
 sub set_manifest {
-    my ($self, $xml) = @_;
-    # support code that passes xml and objects
+    my ($self, $input) = @_;
+    # support code that passes xml, filepaths and objects
     my $resid = 0;
-    if(ref($xml) && $xml->isa('Win32::Exe::Manifest')) {
-        $resid = $xml->get_resource_id;
-        $xml = $xml->output ;
+    my $xml;
+    if(ref($input) && $input->isa('Win32::Exe::Manifest')) {
+        $resid = $input->get_resource_id;
+        $xml = $input->output ;
+    } else {
+        my $filecontent;
+        eval {
+            my $paramisfile = 0;
+            {
+                no warnings qw( io );
+                $paramisfile = (-f $input);
+            }
+            if($paramisfile) {
+                open my $fh, '<', $input;
+                $filecontent = do { local $/; <$fh> };
+                my $errors = $@;
+                close($fh);
+                die $errors if $errors;
+            } else {
+                $filecontent = $input;
+            }
+        };
+        $xml = ( $@ ) ? $input : $filecontent;
     }
     $resid ||= 1;
     my $rsrc = $self->resource_section;

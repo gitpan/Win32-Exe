@@ -5,7 +5,7 @@ use FindBin;
 use lib "$FindBin::Bin/../inc";
 use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/../../Parse-Binary/lib";
-use Test::More tests => 2 + 6 + 106;
+use Test::More tests => 116;
 use File::Copy;
 use Config;
 
@@ -168,7 +168,8 @@ for ( qw( 32  64 ) ) {
     is(scalar(@deps), 0, qq(Changed check dependencies $PEtype) );
     
     $mnf->set_execution_level('none');
-    $mnf->set_dpiaware('true');
+    $mnf->set_dpiaware('false');
+    $mnf->set_assembly_description('Some Descriptive String For Application');
     $exe->set_manifest($mnf);
     $exe->write;
     undef $exe;
@@ -183,7 +184,8 @@ for ( qw( 32  64 ) ) {
     is( $mnf->get_resource_id, 1, qq(dpiaware check resource id $PEtype) );
     is( $mnf->get_execution_level, 'none', qq(dpiaware check execution level $PEtype) );
     is( $mnf->get_uiaccess, undef, qq(dpiaware check ui access $PEtype) );
-    is( $mnf->get_dpiaware, 'true', qq(dpiaware check dpiaware $PEtype) );
+    is( $mnf->get_dpiaware, 'false', qq(dpiaware check dpiaware $PEtype) );
+    is( $mnf->get_assembly_description, 'Some Descriptive String For Application', qq(dpiaware check description $PEtype) );
     
     my $mrsrc = $exe->manifest;
     ok($mrsrc, qq($PEtype got manifest resource));
@@ -194,12 +196,11 @@ for ( qw( 32  64 ) ) {
     ok( ($mtext =~/asmv3:windowsSettings/), qq($PEtype windowsSettings namespace));
 
     SKIP: {
-        skip qq(Cannot Execute $PEtype bit application on this architecture), 1 if !$cansafelyexecute;
+        skip qq(Cannot Execute $PEtype bit Windows application on this architecture), 1 if !$cansafelyexecute;
         like( qx($extendedexe 2>&1), qr/^Win32::Exe Test Executable$/, qq(Execute $PEtype bit executable) );
     }
-    
+
     unlink($extendedexe);
-    
 }
 
 1;

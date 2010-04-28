@@ -1,6 +1,5 @@
 #!/usr/bin/env perl
-# $File: //local/member/autrijus/Win32-Exe/Makefile.PL $ $Author: autrijus $
-# $Revision: #6 $ $Change: 1130 $ $Date: 2004-02-17T15:40:29.640821Z $
+# Copyright 2004, 2007, 2010 by Audrey Tang <cpan@audreyt.org>
 
 use inc::Module::Install;
 
@@ -13,7 +12,7 @@ version_from    ('lib/Win32/Exe.pm');
 
 requires    (
     perl        => '5.6.0',
-    'Parse::Binary' => 0.05,
+    'Parse::Binary' => 0.11,
     'XML::Simple'   => 2.18,
     'XML::Parser'   => 2.36,
 );

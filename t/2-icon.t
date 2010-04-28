@@ -1,6 +1,4 @@
 #!/usr/bin/perl -w
-# $File: /local/member/autrijus/Win32-Exe//t/2-icon.t $ $Author: autrijus $
-# $Revision: #10 $ $Change: 3628 $ $DateTime: 2004-03-16T13:12:33.854545Z $
 
 use strict;
 use FindBin;
