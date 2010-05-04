@@ -1,4 +1,4 @@
-# Copyright 2004 by Audrey Tang <cpan@audreyt.org>
+# Copyright 2004, 2010 by Audrey Tang <cpan@audreyt.org>
 
 package Win32::Exe::Resource::GroupIcon;
 
@@ -31,11 +31,24 @@ sub set_icons {
     $self->set_members('Resource::Icon' => $icons);
 
     my $rsrc = $self->first_parent('Resources') or return;
+	
+	# get the existing resource icon ids
+	
+	my %existids = ();
+	for my $groupicon ($rsrc->objects('GroupIcon')) {	
+		for my $icon ( $groupicon->icons ) {
+			my $id = $icon->Id;
+			$existids{$id} = 1;
+		}
+    }
 
+	my $nextid = 0;
     foreach my $idx (0 .. $#{$icons}) {
-	my $icon = $self->icons->[$idx];
-	$icon->SetId($idx+1);
-	$rsrc->insert($self->icon_name($icon->Id), $icons->[$idx]);
+		$nextid ++;
+		while(exists($existids{$nextid})) { $nextid ++; }
+		my $icon = $self->icons->[$idx];
+		$icon->SetId($nextid);
+		$rsrc->insert($self->icon_name($icon->Id), $icons->[$idx]);
     }
 }
 

@@ -1,5 +1,5 @@
 package Win32::Exe;
-$Win32::Exe::VERSION = '0.13';
+$Win32::Exe::VERSION = '0.14';
 
 =head1 NAME
 
@@ -7,29 +7,37 @@ Win32::Exe - Manipulate Win32 executable files
 
 =head1 VERSION
 
-This document describes version 0.13 of Win32::Exe, released
-April 28, 2010.
+This document describes version 0.14 of Win32::Exe, released
+May 03, 2010.
 
 =head1 SYNOPSIS
 
     use Win32::Exe;
     my $exe = Win32::Exe->new('c:/windows/notepad.exe');
+    
+    # add a default resource structure if none exists
+    # (create_resource_section only works on MSWin)
+    
+    $exe = $exe->create_resource_section;
 
     # Get version information
-    print $exe->version_info->get('FileDescription'), ": ",
-    $exe->version_info->get('LegalCopyright'), "\n";
+    my $info = $exe->get_version_info;
+    print qq($_ = $info->{$_}\n) for (sort keys(%$info));
 
-    # Dump icons in an executable
-    foreach my $icon ($exe->icons) {
-    printf "Icon: %s x %s (%s colors)\n",
-           $icon->Width, $icon->Height, 2 ** $icon->BitCount;
+    # Extract icons from an executable
+    my @iconnames = $exe->get_group_icon_names;
+    for ( my $i = 0; $i < @iconnames; $i++ ) {
+        my $filename = 'icon' . $i . '.ico';
+        my $iconname = $iconnames[$i];
+        $exe->extract_group_icon($iconname,$filename);
     }
 
-    # Import icons from a .exe or .ico file and writes back the file
+    # Import icons from a .exe or .ico file and write back the file
     $exe->update( icon => '/c/windows/taskman.exe' );
+    $exe->update( icon => 'myicon.ico' );
 
     # Change it to a console application, then save to another .exe
-    $exe->SetSubsystem('console');
+    $exe->set_subsystem_console;
     $exe->write('c:/windows/another.exe');
     
     # Add a manifest section
@@ -37,8 +45,16 @@ April 28, 2010.
     # or a default
     $exe->update( defaultmanifest => 1 );
     
+    # or specify manifest args
+    $exe->update( manifestargs => { ExecLevel => 'requireAdministrator' } );
+    
     # Get manifest object
-    $manifest = $exe->get_manifest if $exe->has_manifest 
+    $manifest = $exe->get_manifest if $exe->has_manifest;
+    
+    # change execution level
+    $manifest->set_execution_level('requireAdministrator');
+    $exe->set_manifest($manifest);
+    $exe->write;
     
 
 =head1 DESCRIPTION
@@ -47,8 +63,230 @@ This module parses and manipulating Win32 PE/COFF executable headers,
 including version information, icons, manifest and other resources.
 The module Win32::Exe::Manifest can be used for manifest handling.
 
+A script exe_update.pl is provided for simple file updates. 
+
 Also, please see the test files in the source distributions
 F<t/> directory for examples of using this module.
+
+=head1 METHODS
+
+=head2 new
+
+    my $exe = Win32::Exe->new($filename);
+
+Create a Win32::Exe object from $filename. Filename can be an executable
+or a DLL.
+
+=head2 update
+
+    $exe->update( icon         => 'c:/my/icon.ico',
+                  gui          => 1,
+                  info         => [ 'FileDescription=My File', 'FileVersion=1.4.3.3567' ],
+                  manifest     => 'c:/my/manifest.xml',
+                  manifestargs => [ 'ExecLevel=asInvoker', 'CommonControls=1' ],
+                  );
+
+The B<update> method provides a convenience method for the most common actions. It
+writes the information you provide to the file opened by Win32::Exe->new($filename).
+You do not have to call $exe->write - the method automatically updates the opened
+file.
+
+Param detail:
+
+B<icon> Pass the name of an executable, dll or ico file to extract the icon and
+make it the main icon for the Win32 executable.
+
+B<info> Pass a reference to an array of strings containing key - value pairs
+separated by '='.
+
+e.g. info => [ 'FileDescription=My File', 'FileVersion=1.4.3.3567' ]
+
+Recognised keys are
+
+    Comments        CompanyName     FileDescription FileVersion
+    InternalName    LegalCopyright  LegalTrademarks OriginalFilename
+    ProductName     ProductVersion
+
+B<gui  or  console> Use parameter 'gui' or 'console' to set the executable
+subsystem to Windows or Console. You can, of course, only use one or the other
+of gui / console, not both.
+
+B<manifest> Specify a manifest file to add to the executable resources.
+
+B<manifestargs> As an alternative to specifying a manifest file, pass a
+reference to an array of strings containing key - value pairs separated
+by '='.
+
+e.g. manifestargs => [ 'ExecLevel=asInvoker', 'CommonControls=1' ]
+
+Recognised keys are
+
+    ExecutionLevel  UIAccess     ExecName   Description
+    CommonControls  Version
+
+=head2 create_resource_section
+
+    $exe = $exe->create_resource_section if !$exe->has_resource_section;
+
+If an executable file does not have an existing resource section, you must create
+one before attempting to add version, icon or manifest resources. The method
+create_resource_section is only available on MSWin platforms.
+After calling create_resource_section, the original Win32::Exe object does not
+reference the updated data. The method therefore returns a reference to a new
+Win32::Exe object that references the updated data.
+
+Always call as :
+
+$exe = $exe->create_resource_section if !$exe->has_resource_section;
+
+=head2 get_manifest
+
+    my $manifest = $exe->get_manifest;
+
+Retrieves a Win32::Exe::Manifest object. (See docs for Win32::Exe::Manifest)
+
+=head2 set_manifest
+
+    $exe->set_manifest($manifest);
+    $exe->write;
+    
+Takes a Win32::Exe::Manifest object. You must explicitly call 'write' to commit
+changes to file. Also takes a filepath to an xml file containing raw manifest
+information.
+
+=head2 set_manifest_args
+
+    $exe->set_manifest_args($argref);
+    $exe->write;
+
+Accepts a reference to a hash with one or more of the the keys
+
+    ExecutionLevel  UIAccess     ExecName   Description
+    CommonControls  Version
+
+Also accepts a reference to an array of strings of the format:
+    [ 'key1=value1', 'key2=value2' ]
+
+Example Values:
+
+    ExecutionLevel=asInvoker
+    UIAccess=false
+    CommonControls=1
+    Version=6.8.67.334534
+    ExecName=My.Application
+    Description=My Application
+
+The CommonControls argument can be specified to add a dependency on
+Common Controls Library version 6.0.0.0
+
+=head2 get_version_info
+
+    my $inforef = $exe->get_version_info;
+
+Returns a reference to a hash with the keys:
+
+    Comments        CompanyName     FileDescription FileVersion
+    InternalName    LegalCopyright  LegalTrademarks OriginalFilename
+    ProductName     ProductVersion
+
+=head2 set_version_info
+
+    $exe->set_version_info($inforef);
+    $exe->write;
+
+Accepts a reference to a hash with one or more of the the keys
+
+    Comments        CompanyName     FileDescription FileVersion
+    InternalName    LegalCopyright  LegalTrademarks OriginalFilename
+    ProductName     ProductVersion
+
+Also accepts a reference to an array of strings of the format:
+    [ 'key1=value1', 'key2=value2' ]
+
+=head2 set_subsystem_windows
+
+    $exe->set_subsystem_windows;
+    $exe->write;
+
+Sets the executable system as 'windows'. (GUI).
+You may also call $exe->SetSubsystem('windows);
+This is the equivalent of $exe->update( gui => 1);
+
+=head2 set_subsystem_console
+
+    $exe->set_subsystem_console;
+    $exe->write;
+
+Sets the executable system as 'console'.
+You may also call $exe->SetSubsystem('console);
+This is the equivalent of $exe->update( console => 1);
+
+=head2 get_subsystem
+
+    my $subsys = $exe->get_subsystem;
+
+Returns a descriptive string for the subsystem.
+Possible values:  windows | console | posix | windowsce | native
+You can usefully update executables with the windows or console
+subsystem
+
+=head2 set_single_group_icon
+
+    $exe->set_single_group_icon($iconfile);
+    $exe->write;
+
+Accepts the path to an icon file. Replaces all the icons in the
+exec with the icons from the file.
+
+=head2 get_group_icon_names
+
+    my @iconnames = $exe->get_group_icon_names;
+
+Returns a list of the names of all the group icons in the
+executable or dll. If there are no group icons, returns an empty
+list. The names returned can be used as parameters to other icon
+handling methods.
+
+=head2 get_group_icon
+
+    $exe->get_group_icon($groupiconname);
+
+Accepts a group icon name as returned by get_group_icon_names.
+Returns the Wx::Exe::Resource::GroupIcon object for the named
+GroupIcon
+
+=head2 add_group_icon
+
+    $exe->add_group_icon($groupiconname, $iconfilepath);
+    $exe->write;
+
+Accepts a group icon name and a path to an icon file. Adds the
+icon to the exec without affecting existing icons. The group
+icon name must not already exist.
+
+=head2 replace_group_icon
+
+    $exe->replace_group_icon($groupiconname, $iconfilepath);
+    $exe->write;
+
+Accepts a group icon name and a path to an icon file.
+Replaces the groupicon named with the contents of the icon file.
+
+=head2 remove_group_icon
+
+    $exe->remove_group_icon($groupiconname);
+    $exe->write;
+
+Accepts a group icon name. Removes the group icon with that name
+from the exec or dll.
+
+=head2 export_group_icon
+
+    $exe->export_group_icon($groupiconname, $iconfilepath);
+
+Accepts a group icon name and a .ico filepath. Writes the named
+icon group to the file in filepath.
+
 
 =cut
 
@@ -82,9 +320,33 @@ sub is_application { ( $_[0]->is_assembly ) ? 0 : 1; }
 
 sub is_assembly { $_[0]->Characteristics & 0x2000; }
 
+sub has_resource_section {
+    my ($self) = @_;
+    my $section = $self->first_member('Resources');
+    return( $section ) ? 1 : 0;
+}
+
+sub create_resource_section {
+    my $self = shift;
+    return $self if($self->has_resource_section || ( $^O !~ /^mswin/i ) );
+    require Win32::Exe::InsertResourceSection;
+    my $filename = (exists($self->{filename}) && (-f $self->{filename} )) ? $self->{filename} : undef;
+    return $self if !$filename;
+    if(my $newref = Win32::Exe::InsertResourceSection::insert_pe_resource_section($filename)) {
+        return $newref;
+    } else {
+        return $self;
+    }
+}
+
 sub resource_section {
     my ($self) = @_;
-    $self->first_member('Resources');
+    my $section = $self->first_member('Resources');
+    return $section if $section;
+    my $wmsg = 'No resource section found in file ';
+    $wmsg .= $self->{filename} if(exists($self->{filename}) && $self->{filename}); 
+    warn $wmsg;
+    return undef;
 }
 
 sub sections {
@@ -172,35 +434,18 @@ sub update {
     if (my $manifest = $args{manifest}) {
         $self->set_manifest($manifest);
     }
+    
+    if (my $manifestargs = $args{manifestargs}) {
+        $self->set_manifest_args($manifestargs);
+    }
 
     if (my $icon = $args{icon}) {
-    my @icons = Win32::Exe::IconFile->new($icon)->icons;
-    $self->set_icons(\@icons) if @icons;
+        my @icons = Win32::Exe::IconFile->new($icon)->icons;
+        $self->set_icons(\@icons) if @icons;
     }
 
     if (my $info = $args{info}) {
-    my @info = ($self->default_info, @$info);
-
-    my @pairs;
-    foreach my $pairs (map split(/\s*;\s*(?=[\w\\\/]+\s*=)/, $_), @info) {
-        my ($key, $val) = split(/\s*=\s*/, $pairs, 2);
-        next if $key =~ /language/i;
-
-        if ($key =~ /^(product|file)version$/i) {
-        $key = "\u$1Version";
-        $val =~ /^(?:\d+\.)+\d+$/ or die "$key cannot be '$val'";
-        $val .= '.0' while $val =~ y/.,// < 3;
-
-        push(@pairs,
-            [ $key => $val ],
-            [ "/StringFileInfo/#1/$key", $val ]);
-        }
-        else {
-        push(@pairs, [ $key => $val ]);
-        }
-    }
-
-    $self->set_version_info(\@pairs) if @pairs;
+        $self->set_version_info( $info);
     }
 
     die "'gui' and 'console' cannot both be true"
@@ -246,11 +491,54 @@ sub version_info {
     return $rsrc->first_object('Version');
 }
 
+sub get_version_info {
+    my $self = shift;
+    my $vinfo = $self->version_info or return;
+    my @keys = qw(
+        Comments        CompanyName     FileDescription FileVersion
+        InternalName    LegalCopyright  LegalTrademarks OriginalFilename
+        ProductName     ProductVersion
+    );
+    my $rval = {};
+    for my $key (@keys) {
+        my $val = $vinfo->get($key);
+        $val =~ s/,/\./g if(defined($val) && ( $key =~ /version/i ) );
+        $rval->{$key} = $val if defined($val);
+    }
+    return $rval
+}
+
 sub set_version_info {
-    my ($self, $pairs) = @_;
+    my ($self, $inputpairs) = @_;
+    my $inputref;
+    if(ref($inputpairs eq 'HASH')) {
+        my @newinput = ();
+        push(@newinput, qq($_ = $inputpairs->{$_})) for (sort keys(%$inputpairs));
+        $inputref = \@newinput;
+    } else {
+        $inputref = $inputpairs;
+    }
+    my @info = ($self->default_info, @$inputpairs);
+    my @pairs;
+    foreach my $pairs (map split(/\s*;\s*(?=[\w\\\/]+\s*=)/, $_), @info) {
+        my ($key, $val) = split(/\s*=\s*/, $pairs, 2);
+        next if $key =~ /language/i;
+
+        if ($key =~ /^(product|file)version$/i) {
+            $key = "\u$1Version";
+            $val =~ /^(?:\d+\.)+\d+$/ or die "$key cannot be '$val'";
+            $val .= '.0' while $val =~ y/.,// < 3;
+
+            push(@pairs,
+                [ $key => $val ],
+                [ "/StringFileInfo/#1/$key", $val ]);
+        } else {
+            push(@pairs, [ $key => $val ]);
+        }
+    }
     my $rsrc = $self->resource_section or return;
-    my $version = $rsrc->first_object('Version');
-    $version->set(@$_) for @$pairs;
+    my $version = $rsrc->first_object('Version') or return;
+    $version->set(@$_) for @pairs;
     $version->refresh;
 }
 
@@ -314,6 +602,34 @@ sub set_manifest {
     $rsrc->refresh;
 }
 
+sub set_manifest_args {
+    my ($self, $inputpairs) = @_;
+    my $inputref;
+    if(ref($inputpairs eq 'HASH')) {
+        my @newinput = ();
+        push(@newinput, qq($_ = $inputpairs->{$_})) for (sort keys(%$inputpairs));
+        $inputref = \@newinput;
+    } else {
+        $inputref = $inputpairs;
+    }
+    my @manifestargs = @$inputpairs;
+    my %arghash;
+    foreach my $pairs (map split(/\s*;\s*(?=[\w\\\/]+\s*=)/, $_), @manifestargs) {
+        my ($key, $val) = split(/\s*=\s*/, $pairs, 2);
+        my $addkey = lc($key);
+        $arghash{$addkey} = $val;
+    }
+    my $manifest = $self->get_manifest;
+    $manifest->set_execution_level($arghash{executionlevel}) if exists($arghash{executionlevel});
+    $manifest->set_uiaccess($arghash{uiaccess}) if exists($arghash{uiaccess});
+    $manifest->set_assembly_name($arghash{execname}) if exists($arghash{execname});
+    $manifest->set_assembly_description($arghash{description}) if exists($arghash{description});
+    $manifest->set_assembly_version($arghash{version}) if exists($arghash{version});
+    $manifest->add_common_controls() if $arghash{commoncontrols};
+    
+    $self->set_manifest($manifest);
+}
+
 sub get_manifest {
     my ($self) = @_;
     my $mtype = ($self->is_assembly) ? 'assembly' : 'application';
@@ -344,6 +660,117 @@ sub merge_manifest {
     $main->merge_manifest($mnf);
     $self->set_manifest($main);
 }
+
+sub set_subsystem_windows {
+    my $self = shift;
+    return if !$self->is_application;
+    $self->SetSubsystem("windows")
+}
+
+sub set_subsystem_console {
+    my $self = shift;
+    return if !$self->is_application;
+    $self->SetSubsystem("console")
+}
+
+sub get_subsystem { $_[0]->Subsystem; }
+
+sub get_group_icon_names {
+    my $self = shift;
+    my @names = ();
+    my $section = $self->resource_section or return @names;
+    for my $resource ( $section->objects('GroupIcon')) {
+        my $path = $resource->PathName;
+        my($_null, $_rtgi, $name, $_langid) = split(/\//, $path);
+        push(@names, $name);# if $resource->isa('Win32::Exe::Resource::GroupIcon');
+    }
+    return @names;
+}
+
+sub set_single_group_icon {
+    my($self, $iconfile) = @_;
+    my @icons = Win32::Exe::IconFile->new($iconfile)->icons;
+    $self->set_icons(\@icons) if @icons;
+}
+
+sub get_group_icon {
+    my ($self, $getname) = @_;
+    return undef if !$getname;
+    my $res = undef;
+    my $section = $self->resource_section or return $res;
+    $res = $self->_exists_group_icon($getname);
+    return $res;
+}
+
+sub add_group_icon {
+    my ($self, $newname, $filename) = @_;
+    my $exists = 0;
+    my $section = $self->resource_section or return;
+    my ($res, $langid) = $self->_exists_group_icon($newname);
+    return undef if $res; # it already exists
+    
+    my @icons = Win32::Exe::IconFile->new($filename)->icons;
+    return if !(scalar @icons);
+    
+    my $group = $self->require_class('Resource::GroupIcon')->new;
+    my $pathname = '/#RT_GROUP_ICON/' . $newname . '/' . $langid;
+    $group->SetPathName($pathname);
+    $group->set_parent($section);
+    $section->insert($group->PathName, $group);
+    $group->set_icons(\@icons);
+    $group->refresh;
+}
+
+sub replace_group_icon {
+    my ($self, $getname, $filename) = @_;
+    my $section = $self->resource_section or return;
+    my @icons = Win32::Exe::IconFile->new($filename)->icons;
+    return if !(scalar @icons);
+    my $group = $self->get_group_icon($getname) or return;
+    my $pathname = $group->PathName;
+    $section->remove($pathname);
+    my $newgroup = $self->require_class('Resource::GroupIcon')->new;
+    $newgroup->SetPathName($pathname);
+    $newgroup->set_parent($section);
+    $section->insert($newgroup->PathName, $newgroup);
+    $newgroup->set_icons(\@icons);
+    $newgroup->refresh;
+}
+
+sub remove_group_icon {
+    my ($self, $matchname) = @_;
+    my $section = $self->resource_section or return;
+    my $existing = $self->get_group_icon($matchname) or return;
+    $section->remove($existing->PathName);
+    $section->refresh;
+}
+
+sub _exists_group_icon {
+    my ($self, $matchname) = @_;
+    my $section = $self->resource_section or return;
+    my $langid = '#0';
+    my $res = undef;
+    for my $resource ( $section->objects('GroupIcon')) {
+        my $path = $resource->PathName;
+        my($_null, $_rtgi, $name, $_langid) = split(/\//, $path);
+        $langid = $_langid;
+        if($name eq $matchname) {
+            $res = $resource;
+            last;
+        }
+    }
+    return ( wantarray ) ? ( $res, $langid ) : $res;
+}
+
+sub export_group_icon {
+    my ($self, $matchname, $filename) = @_;
+    my $existing = $self->get_group_icon($matchname) or return;
+    my $iconobject = Win32::Exe::IconFile->new();
+    my @icons = $existing->icons;
+    $iconobject->set_icons(\@icons);
+    $iconobject->write_file($filename, $iconobject->dump);
+}
+
 
 1;
 

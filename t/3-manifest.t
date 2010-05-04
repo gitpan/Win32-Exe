@@ -2,10 +2,10 @@
 
 use strict;
 use FindBin;
-use lib "$FindBin::Bin/../inc";
-use lib "$FindBin::Bin/../lib";
-use lib "$FindBin::Bin/../../Parse-Binary/lib";
-use Test::More tests => 116;
+#use lib "$FindBin::Bin/../inc";
+#use lib "$FindBin::Bin/../lib";
+#use lib "$FindBin::Bin/../../Parse-Binary/lib";
+use Test::More tests => 136;
 use File::Copy;
 use Config;
 
@@ -194,7 +194,28 @@ for ( qw( 32  64 ) ) {
     ok( ($mtext !~/trustInfo/), qq($PEtype no trustInfo));
     ok( ($mtext =~/asmv3:application/), qq($PEtype application namespace));
     ok( ($mtext =~/asmv3:windowsSettings/), qq($PEtype windowsSettings namespace));
+    
+    #---
+    $exe->set_manifest_args(['ExecutionLevel=asInvoker;ExecName=A.New.Name;Description=A New Name;Version=100.200.300.400;CommonControls=1']);
+    $exe->write;
+    undef $exe;
 
+    $exe = Win32::Exe->new($extendedexe);
+    isa_ok($exe, 'Win32::Exe', 'Starting manifest args check');
+    ok($exe->has_manifest, qq($PEtype has manifest after margs));
+    $mrsrc = $exe->manifest;
+    ok($mrsrc, qq($PEtype got manifest resource));
+    $mtext = $mrsrc->get_manifest;
+    $mnf = $exe->get_manifest;
+    isa_ok($mnf, 'Win32::Exe::Manifest', qq(ISA Win32::Exe::Manifest after margs $PEtype));
+    is( $mnf->get_execution_level, 'asInvoker', qq(margs check execution level $PEtype) );
+    is( $mnf->get_uiaccess, 'false', qq(margs check ui access $PEtype) );
+    is( $mnf->get_assembly_description, 'A New Name', qq(margs check description $PEtype) );
+    is( $mnf->get_assembly_name, 'A.New.Name', qq(margs check description $PEtype) );
+    is( $mnf->get_assembly_version, '100.200.300.400', qq(margs check description $PEtype) );
+    
+    ok( ($mtext =~ /6595b64144ccf1df/), qq($PEtype has common controls));
+    
     SKIP: {
         skip qq(Cannot Execute $PEtype bit Windows application on this architecture), 1 if !$cansafelyexecute;
         like( qx($extendedexe 2>&1), qr/^Win32::Exe Test Executable$/, qq(Execute $PEtype bit executable) );

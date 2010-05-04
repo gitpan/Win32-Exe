@@ -21,6 +21,9 @@ B<exe_update.pl> S<[ B<--gui> | B<--console> ]> S<[ B<--icon> I<iconfile> ]>
 This program rewrites PE headers in a Windows executable file.  It can
 change whether the executable runs with a console window, as well as
 setting the icons, manifest and version information associated with it.
+In general, a PE file must have an existing resource section or you
+cannot add icons, manifests or version info. However, on Win32 platforms
+a new resource section will be created if none exists.
 
 =head1 OPTIONS
 
@@ -63,6 +66,27 @@ These special C<KEY> names are recognized:
     InternalName    LegalCopyright  LegalTrademarks OriginalFilename
     ProductName     ProductVersion
 
+=item B<-A>, B<--manifestargs>=I<KEY=VAL>
+
+As an alternative to specifying a manifest file, specify manifest attributes.
+The name/value pair is joined by C<=>.  You may specify C<-A> multiple times,
+or use C<;> to link several pairs. This option may be preferable to using
+a manifest file as these attributes will be combined with any existing
+manifest that may be in the executable.
+
+These special C<KEY> names are recognized:
+
+    ExecutionLevel  UIAccess     ExecName   Description
+    CommonControls  Version
+
+The CommonControls key is a simple boolean value to indicate that the
+Common Controls Version 6.0.0.0 dependency should be added to the manifest.
+
+e.g
+
+--manifestargs="ExecutionLevel=requireAdministrator;ExecName=My.App;CommonControls=1"
+--manifestargs="Version=1.3.6.7895;UIAccess=false"
+
 =back
 
 =cut
@@ -74,17 +98,27 @@ Getopt::Long::GetOptions( $Options,
     'i|icon:s',         # Icon file
     'm|manifest:s',     # manifest file
     'N|info:s@',        # Executable header info
+    'A|manifestargs:s@' # manifest arguments
 );
 
 my $exe = shift or die "Usage: " . basename($0) .
-    " [--gui | --console] [--icon file.ico] [--manifest file.xml] [--info key=value] file.exe\n";
+    " [--gui | --console] [--icon file.ico] [--manifest file.xml] [--info key=value] [--manifestargs key=value ] file.exe\n";
 
-Win32::Exe->new($exe)->update(
-    gui	     => $Options->{g},
-    console  => $Options->{c},
-    icon     => $Options->{i},
-    info     => $Options->{N},
-    manifest => $Options->{m},
+my $exec = Win32::Exe->new($exe) or die "Unable to open file $exe";
+
+if(!$exec->has_resource_section) {
+    die("Cannot create new resource section on this platform. Requires Win32") if $^O !~ /^mswin/i;
+    $exec->create_resource_section or die("Failed to create new resource section");
+    $exec = Win32::Exe->new($exe) or die "Unable to open file $exe";
+}
+
+$exec->update(
+    gui	        => $Options->{g},
+    console     => $Options->{c},
+    icon        => $Options->{i},
+    info        => $Options->{N},
+    manifest    => $Options->{m},
+    manifestargs => $Options->{A},
 ) or die "Update of $exe failed!\n";
 
 __END__

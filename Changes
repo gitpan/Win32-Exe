@@ -1,4 +1,16 @@
 
+Release 0.14: 03 May 2010
+
+* Added support for multiple icons
+* Added support for creating resource section for PE files that
+  have none (Win32 platforms only).
+* Removed Module::Install usage - it does not work on Win32 for
+  sub directory build. Will restore usage once CPAN Module::Install
+  works. (next release according to CPAN reports).
+
+----------------------------------------------------------------------
+Release 0.13:
+
 * Added support for PE+ (x64 64bit executables)
 * Fixed manifest bug caused by 'pack' changes in perl 5.10
 

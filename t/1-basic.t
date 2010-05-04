@@ -2,9 +2,9 @@
 
 use strict;
 use FindBin;
-use lib "$FindBin::Bin/../inc";
-use lib "$FindBin::Bin/../lib";
-use lib "$FindBin::Bin/../../Parse-Binary/lib";
+#use lib "$FindBin::Bin/../inc";
+#use lib "$FindBin::Bin/../lib";
+#use lib "$FindBin::Bin/../../Parse-Binary/lib";
 use Test::More tests => 43;
 
 $SIG{__DIE__} = sub { use Carp; Carp::confess(@_) };

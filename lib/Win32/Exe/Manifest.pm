@@ -2,7 +2,7 @@
 # Package       Win32::Exe::Manifest
 # Description:  Handle Win32 PE Manifests
 # Created       Mon Apr 19 17:15:24 2010
-# SVN Id        $Id:$
+# SVN Id        $Id: Manifest.pm 7 2010-05-04 04:57:13Z  $
 # Copyright:    Copyright (c) 2010 Mark Dootson
 # Licence:      This program is free software; you can redistribute it 
 #               and/or modify it under the same terms as Perl itself
@@ -25,7 +25,7 @@ use Exporter;
 use base qw( Exporter );
 use Carp;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 =head1 NAME
 
@@ -33,8 +33,8 @@ Win32::Exe::Manifest - MSWin Application and Assembly manifest handling
 
 =head1 VERSION
 
-This document describes version 0.13 of Win32::Exe::Manifest, released
-April 28, 2010.
+This document describes version 0.14 of Win32::Exe::Manifest, released
+May 03, 2010.
 
 =head1 SYNOPSIS
 
@@ -251,7 +251,7 @@ sub get_assembly_version {
     return (exists($ref->{assembly}->[0]->{assemblyIdentity}->[0]->{version})) ? $ref->{assembly}->[0]->{assemblyIdentity}->[0]->{version} : undef;
 }
 
-=head3 set_assembly_version
+=head3 set_assembly_language
 
     $manifest->set_assembly_language($langid);
 
@@ -556,7 +556,7 @@ If there is no dependency with the name $progid, returns undef.
 sub get_dependency {
     my($self, $depname) = @_;
     if( defined(my $depindex = $self->_get_dependendency_index($depname)) ) {
-        my $ref = $self->refhash()->{assembly}->[0]->{dependency}->[$depindex];
+        my $ref = $self->refhash()->{assembly}->[0]->{dependency}->[$depindex]->{dependentAssembly}->[0]->{assemblyIdentity}->[0];
         my %vals = %$ref;
         return \%vals;
     } else {
