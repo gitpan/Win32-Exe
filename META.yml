@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Win32-Exe
-version:            0.14
+version:            0.15
 abstract:           Manipulate Win32 executable files
 author:
     - Audrey Tang <cpan@audreyt.org>

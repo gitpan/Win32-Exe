@@ -25,7 +25,7 @@ use Exporter;
 use base qw( Exporter );
 use Carp;
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 =head1 NAME
 
@@ -33,8 +33,8 @@ Win32::Exe::Manifest - MSWin Application and Assembly manifest handling
 
 =head1 VERSION
 
-This document describes version 0.14 of Win32::Exe::Manifest, released
-May 03, 2010.
+This document describes version 0.15 of Win32::Exe::Manifest, released
+November 30, 2010.
 
 =head1 SYNOPSIS
 

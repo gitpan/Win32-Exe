@@ -1,4 +1,10 @@
 
+Release 0.15: 30 November 2010
+
+* Fixed parsing of Windows Object files (thanks to Nicolas Georges)
+
+----------------------------------------------------------------------
+
 Release 0.14: 03 May 2010
 
 * Added support for multiple icons

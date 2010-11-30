@@ -38,7 +38,7 @@ sub Data {
     my $v_size = $self->VirtualSize;
     my $f_size = $self->FileSize or return("\0" x $v_size);
 
-    $f_size = $v_size if $v_size < $f_size;
+    $f_size = $v_size if ($v_size && ( $v_size < $f_size));
 
     my $data = $self->parent->substr($self->FileOffset, $f_size);
     $data .= ("\x0" x ($v_size - length($data)));
