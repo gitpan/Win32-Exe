@@ -1,14 +1,14 @@
-#include "perl.h"
-#include "XSUB.h"
-#include "EXTERN.h"
-
-MODULE = Win32::Exe::InsertResourceSection		PACKAGE = Win32::Exe::InsertResourceSection	
-
-PROTOTYPES: DISABLE
-
 #define  WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <shellapi.h>
+
+#include "EXTERN.h"
+#include "perl.h"
+#include "XSUB.h"
+
+MODULE = Win32::Exe::InsertResourceSection      PACKAGE = Win32::Exe::InsertResourceSection 
+
+PROTOTYPES: DISABLE
 
 void
 _insert_resource_section( szFileName, lpData, cbData  )
@@ -18,14 +18,14 @@ _insert_resource_section( szFileName, lpData, cbData  )
   PPCODE:
     int bDeleteExistingResources = 0;
     LPCTSTR lpType = RT_VERSION;
-	LPCTSTR lpName = RT_VERSION;
-	WORD wLanguage = MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL);
+    LPCTSTR lpName = RT_VERSION;
+    WORD wLanguage = MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL);
     BOOL ok;
     int fDiscard;
     
-  	HANDLE hUpdate = BeginUpdateResource(szFileName, bDeleteExistingResources);
+    HANDLE hUpdate = BeginUpdateResource(szFileName, bDeleteExistingResources);
     
-	if (hUpdate == NULL) XSRETURN_UNDEF;
+    if (hUpdate == NULL) XSRETURN_UNDEF;
     
     ok = UpdateResource(hUpdate, lpType, lpName, wLanguage, lpData, cbData);
     
@@ -33,6 +33,6 @@ _insert_resource_section( szFileName, lpData, cbData  )
     
     if (!EndUpdateResource(hUpdate, fDiscard)) XSRETURN_UNDEF;
     
-	if (!ok) XSRETURN_UNDEF;
+    if (!ok) XSRETURN_UNDEF;
     
-	XSRETURN_YES;
+    XSRETURN_YES;

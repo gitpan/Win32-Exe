@@ -2,7 +2,7 @@
 # Package       Win32::Exe::InsertResourceSection
 # Description:  Insert Resource Section
 # Created       Sun May 02 17:32:55 2010
-# SVN Id        $Id: InsertResourceSection.pm 9 2010-05-04 07:51:04Z  $
+# SVN Id        $Id: InsertResourceSection.pm 2 2010-11-30 16:40:31Z mark.dootson $
 # Copyright:    Copyright (c) 2010 Mark Dootson
 # Licence:      This program is free software; you can redistribute it 
 #               and/or modify it under the same terms as Perl itself

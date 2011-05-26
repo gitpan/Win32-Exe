@@ -1,4 +1,11 @@
 
+Release 0.16: 26 May 2011
+
+* Fixed Perl 5.14 Compilation
+
+----------------------------------------------------------------------
+
+
 Release 0.15: 30 November 2010
 
 * Fixed parsing of Windows Object files (thanks to Nicolas Georges)
