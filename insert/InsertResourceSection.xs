@@ -1,4 +1,4 @@
-#define  WIN32_LEAN_AND_MEAN
+#define _WIN32_WINNT 0x0500
 #include <windows.h>
 #include <shellapi.h>
 
@@ -16,12 +16,12 @@ _insert_resource_section( szFileName, lpData, cbData  )
     LPVOID lpData
     DWORD cbData
   PPCODE:
-    int bDeleteExistingResources = 0;
+    BOOL bDeleteExistingResources = FALSE;
     LPCTSTR lpType = RT_VERSION;
     LPCTSTR lpName = RT_VERSION;
     WORD wLanguage = MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL);
     BOOL ok;
-    int fDiscard;
+    BOOL fDiscard;
     
     HANDLE hUpdate = BeginUpdateResource(szFileName, bDeleteExistingResources);
     
@@ -29,7 +29,7 @@ _insert_resource_section( szFileName, lpData, cbData  )
     
     ok = UpdateResource(hUpdate, lpType, lpName, wLanguage, lpData, cbData);
     
-    fDiscard = ( ok ) ? 0 : 1;
+    fDiscard = ( ok ) ? FALSE : TRUE;
     
     if (!EndUpdateResource(hUpdate, fDiscard)) XSRETURN_UNDEF;
     

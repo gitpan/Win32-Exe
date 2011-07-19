@@ -19,7 +19,7 @@ use base qw( Exporter );
 use Carp;
 use Win32::Exe;
 
-our $VERSION = '0.15';
+our $VERSION = '0.17';
 our @EXPORT = qw( insert_pe_resource_section );
 
 sub _is_win { ($^O =~ /^mswin/i) }

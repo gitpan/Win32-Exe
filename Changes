@@ -1,4 +1,11 @@
 
+Release 0.17: 19 July 2011
+
+* Noted that create_resource_section fails on WinXP and below
+
+----------------------------------------------------------------------
+
+
 Release 0.16: 26 May 2011
 
 * Fixed Perl 5.14 Compilation
